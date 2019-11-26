@@ -1,3 +1,6 @@
 .h-100v{
     height: 100vh;
 }
+body{
+    background: rgba(0, 0, 0, 0.356);
+}
