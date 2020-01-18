@@ -92,7 +92,7 @@ canvas {
     /* background-image: linear-gradient(to right, transparent, rgba(68, 158, 247, 0.3), transparent); */
     display: flex;
     flex-direction: column;
-    width: 98%;
+    width: 100%;
 }
 
 .content {
@@ -112,7 +112,7 @@ canvas {
 }
 
 .tech-link:hover {
-    color: #2dfff5!important;
+    color: #29ffff!important;
     background: rgba(0, 0, 0, 0.3);
 }
 
@@ -128,4 +128,16 @@ canvas {
     font-size: 40px;
     padding: 10px;
     margin-right: 10px;
+}
+
+.contact {
+    border-bottom: 1px solid #fee68d!important;
+}
+
+.link-web {
+    font-size: 13px;
+}
+
+.link-web a {
+    color: #29ffff;
 }
