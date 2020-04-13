@@ -1,4 +1,2 @@
-# shahnshahmalik.github.io
----
-permalink: /index.html
----
+# Flynn
+Flynn - a free template
