@@ -1,0 +1,58 @@
+// Global app styles
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+// Global theme variables and overrides
+:root {
+  --header-height: 80px;
+}
+
+// Smooth scrolling for the entire page
+html {
+  scroll-behavior: smooth;
+}
+
+// Custom Material theme overrides
+.mat-mdc-card {
+  border-radius: 16px !important;
+}
+
+.mat-mdc-button {
+  border-radius: 8px !important;
+}
+
+.mat-mdc-raised-button {
+  border-radius: 50px !important;
+}
+
+// Dark theme specific styles
+.dark-theme {
+  .project-dialog-panel .mat-mdc-dialog-container {
+    background: var(--mat-sys-surface-container);
+  }
+}
+
+// Light theme specific styles  
+.light-theme {
+  .project-dialog-panel .mat-mdc-dialog-container {
+    background: var(--mat-sys-surface-container);
+  }
+}
+
+// Custom snackbar styles
+.success-snackbar {
+  --mdc-snackbar-container-color: var(--mat-sys-primary);
+  --mdc-snackbar-supporting-text-color: var(--mat-sys-on-primary);
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: var(--mat-sys-error);
+  --mdc-snackbar-supporting-text-color: var(--mat-sys-on-error);
+}
