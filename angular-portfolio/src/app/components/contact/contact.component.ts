@@ -44,7 +44,7 @@ import { PortfolioDataService } from '../../services/portfolio-data.service';
                   <mat-icon class="contact-icon">phone</mat-icon>
                   <div class="contact-details">
                     <h4>Phone</h4>
-                    <a [href]="'tel:' + portfolioData.contact.phone">{{ portfolioData.contact.phone }}</a>
+                    <a [href]="'tel:' + contactInfo.phone">{{ contactInfo.phone }}</a>
                   </div>
                 </div>
 
@@ -52,7 +52,7 @@ import { PortfolioDataService } from '../../services/portfolio-data.service';
                   <mat-icon class="contact-icon">email</mat-icon>
                   <div class="contact-details">
                     <h4>Email</h4>
-                    <a [href]="'mailto:' + portfolioData.contact.email">{{ portfolioData.contact.email }}</a>
+                    <a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a>
                   </div>
                 </div>
 
@@ -60,7 +60,7 @@ import { PortfolioDataService } from '../../services/portfolio-data.service';
                   <mat-icon class="contact-icon">location_on</mat-icon>
                   <div class="contact-details">
                     <h4>Location</h4>
-                    <p>{{ portfolioData.contact.address.street }}, {{ portfolioData.contact.address.city }}, {{ portfolioData.contact.address.country }}</p>
+                    <p>{{ contactInfo.location }}</p>
                   </div>
                 </div>
 
@@ -68,7 +68,7 @@ import { PortfolioDataService } from '../../services/portfolio-data.service';
                   <h4>Follow Me</h4>
                   <mat-chip-set>
                     <mat-chip 
-                      *ngFor="let social of portfolioData.contact.social" 
+                      *ngFor="let social of contactInfo.socialLinks" 
                       class="social-chip"
                       (click)="openSocialLink(social.url)">
                       <mat-icon [fontSet]="'fa'" [fontIcon]="social.icon"></mat-icon>
@@ -158,7 +158,7 @@ import { PortfolioDataService } from '../../services/portfolio-data.service';
   styles: [`
     .contact-section {
       padding: 8rem 4vw;
-      background: var(--mat-sys-surface-container-lowest);
+      background: var(--background-light);
     }
 
     .container {
@@ -175,8 +175,8 @@ import { PortfolioDataService } from '../../services/portfolio-data.service';
       font-size: 3rem;
       font-weight: 700;
       margin-bottom: 1rem;
-      color: var(--mat-sys-on-surface);
-      background: linear-gradient(135deg, var(--mat-sys-primary), var(--mat-sys-secondary));
+      color: var(--text-dark);
+      background: linear-gradient(135deg, var(--primary-cyan), var(--secondary-purple));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -327,7 +327,7 @@ export class ContactComponent {
   private formBuilder = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
 
-  portfolioData = this.portfolioDataService.getPortfolioData();
+  contactInfo = this.portfolioDataService.getContactInfo();
   isSubmitting = false;
 
   contactForm: FormGroup = this.formBuilder.group({

@@ -130,7 +130,7 @@ export class ProjectDialogComponent {
   styles: [`
     .work-section {
       padding: 8rem 4vw;
-      background: var(--mat-sys-surface-container-lowest);
+      background: var(--background-light);
     }
 
     .container {
@@ -147,8 +147,8 @@ export class ProjectDialogComponent {
       font-size: 3rem;
       font-weight: 700;
       margin-bottom: 1rem;
-      color: var(--mat-sys-on-surface);
-      background: linear-gradient(135deg, var(--mat-sys-primary), var(--mat-sys-secondary));
+      color: var(--text-dark);
+      background: linear-gradient(135deg, var(--primary-cyan), var(--secondary-purple));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -156,9 +156,10 @@ export class ProjectDialogComponent {
 
     .section-subtitle {
       font-size: 1.25rem;
-      color: var(--mat-sys-on-surface-variant);
+      color: var(--text-dark);
       max-width: 600px;
       margin: 0 auto;
+      opacity: 0.8;
     }
 
     .projects-grid {
@@ -173,13 +174,15 @@ export class ProjectDialogComponent {
       transition: all 0.3s ease;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: var(--mat-sys-elevation-level1);
-      background: var(--mat-sys-surface-container);
+      box-shadow: 0 8px 32px rgba(78, 205, 196, 0.15);
+      background: white;
+      border: 1px solid rgba(78, 205, 196, 0.1);
     }
 
     .project-card:hover {
       transform: translateY(-8px);
-      box-shadow: var(--mat-sys-elevation-level4);
+      box-shadow: 0 16px 48px rgba(78, 205, 196, 0.25);
+      border-color: var(--primary-cyan);
     }
 
     .card-image-container {
@@ -231,18 +234,20 @@ export class ProjectDialogComponent {
       font-size: 1.5rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
-      color: var(--mat-sys-on-surface);
+      color: var(--text-dark);
     }
 
     .project-description {
-      color: var(--mat-sys-on-surface-variant);
+      color: var(--text-dark);
       margin-bottom: 1rem;
       line-height: 1.5;
+      opacity: 0.8;
     }
 
     .category-chip {
-      background: var(--mat-sys-primary-container);
-      color: var(--mat-sys-on-primary-container);
+      background: var(--primary-cyan);
+      color: white;
+      font-weight: 500;
     }
 
     .card-actions {

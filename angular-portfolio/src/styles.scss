@@ -2,8 +2,23 @@
 
 @use '@angular/material' as mat;
 
-// Import Google Fonts
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+// Import Google Fonts - using a more playful font combination
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+// Sirlisko.com inspired color palette
+:root {
+  --primary-cyan: #4ECDC4;
+  --primary-cyan-dark: #3BA99F;
+  --secondary-purple: #9B59B6;
+  --secondary-pink: #E91E63;
+  --accent-yellow: #F1C40F;
+  --background-light: #FFFFFF;
+  --background-dark: #1A1A1A;
+  --text-dark: #2C3E50;
+  --text-light: #FFFFFF;
+  --surface-light: #F8F9FA;
+  --surface-dark: #2D2D2D;
+}
 
 // Global reset and base styles
 * {
@@ -14,49 +29,59 @@
 
 html, body {
   height: 100%;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   line-height: 1.6;
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
+  background: var(--background-light);
+  color: var(--text-dark);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-// Typography improvements
+// Dark theme
+body.dark-theme {
+  background: var(--background-dark);
+  color: var(--text-light);
+}
+
+// Typography improvements - more playful and modern
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   line-height: 1.2;
 }
 
 p {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 400;
 }
 
-// Custom scrollbar
+code, pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+// Custom scrollbar with cyan theme
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--mat-sys-surface-variant);
+  background: rgba(78, 205, 196, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--mat-sys-primary);
+  background: var(--primary-cyan);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--mat-sys-secondary);
+  background: var(--primary-cyan-dark);
 }
 
-// Loading animation
+// Enhanced animations inspired by sirlisko.com
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -95,6 +120,16 @@ p {
   }
 }
 
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
 // Utility classes
 .text-center { text-align: center; }
 .text-left { text-align: left; }
@@ -109,6 +144,52 @@ p {
 .mb-2 { margin-bottom: 1rem; }
 .mb-3 { margin-bottom: 1.5rem; }
 .mb-4 { margin-bottom: 2rem; }
+
+// Sirlisko-inspired utility classes
+.cyan-bg { background: var(--primary-cyan); }
+.purple-bg { background: var(--secondary-purple); }
+.pink-bg { background: var(--secondary-pink); }
+
+.cyan-text { color: var(--primary-cyan); }
+.purple-text { color: var(--secondary-purple); }
+.pink-text { color: var(--secondary-pink); }
+
+.hover-float:hover {
+  animation: float 2s ease-in-out infinite;
+}
+
+.hover-pulse:hover {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+// Material Design overrides for sirlisko theme
+.mat-mdc-card {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(78, 205, 196, 0.15) !important;
+  transition: all 0.3s ease !important;
+}
+
+.mat-mdc-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 16px 48px rgba(78, 205, 196, 0.25) !important;
+}
+
+.mat-mdc-button {
+  border-radius: 12px !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 500 !important;
+}
+
+.mat-mdc-raised-button {
+  border-radius: 50px !important;
+  background: var(--primary-cyan) !important;
+  color: white !important;
+}
+
+.mat-mdc-raised-button:hover {
+  background: var(--primary-cyan-dark) !important;
+  transform: translateY(-2px) !important;
+}
 
 // Responsive breakpoints
 @media (max-width: 768px) {

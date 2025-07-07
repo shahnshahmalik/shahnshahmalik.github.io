@@ -1,139 +1,119 @@
 import { Injectable } from '@angular/core';
-import { PortfolioData, Project, TechStack, SocialLink } from '../models/portfolio.interface';
+import { Project, TechStack, ContactInfo } from '../models/portfolio.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PortfolioDataService {
-  private portfolioData: PortfolioData = {
-    personal: {
-      name: 'Shahnshah Malik',
-      title: 'Freelance Web Designer & Developer based in New Delhi, India',
-      description: 'Highly experienced in designing and developing responsive websites and web applications.',
-      location: 'New Delhi, India'
+
+  private projects: Project[] = [
+    {
+      id: '1',
+      title: 'SaaS Analytics Platform',
+      description: 'A comprehensive analytics dashboard for SaaS businesses with real-time metrics, user behavior tracking, and revenue insights. Built with modern web technologies for scalability.',
+      image: 'assets/web-development-1.jpg',
+      category: 'SaaS Platform'
     },
-    projects: [
-      {
-        id: 'em_i',
-        title: 'E-commerce Platform',
-        image: 'assets/projects/em_i.png',
-        description: 'Modern e-commerce solution',
-        category: 'Web Application'
-      },
-      {
-        id: 'em_m_1',
-        title: 'Mobile E-commerce',
-        image: 'assets/projects/em_m_1.png',
-        description: 'Mobile-first e-commerce design',
-        category: 'Mobile Design'
-      },
-      {
-        id: 'em_m_2',
-        title: 'E-commerce Dashboard',
-        image: 'assets/projects/em_m_2.png',
-        description: 'Admin dashboard for e-commerce',
-        category: 'Dashboard'
-      },
-      {
-        id: 'fn_i',
-        title: 'Financial Platform',
-        image: 'assets/projects/fn_i.png',
-        description: 'Financial services platform',
-        category: 'FinTech'
-      },
-      {
-        id: 'fn_m_1',
-        title: 'Mobile Banking',
-        image: 'assets/projects/fn_m_1.png',
-        description: 'Mobile banking application',
-        category: 'Mobile App'
-      },
-      {
-        id: 'fn_m_2',
-        title: 'Investment Dashboard',
-        image: 'assets/projects/fn_m_2.png',
-        description: 'Investment tracking dashboard',
-        category: 'Dashboard'
-      },
-      {
-        id: 'ta_m_1',
-        title: 'Task Management',
-        image: 'assets/projects/ta_m_1.png',
-        description: 'Project management tool',
-        category: 'Productivity'
-      },
-      {
-        id: 'ta_m_2',
-        title: 'Team Collaboration',
-        image: 'assets/projects/ta_m_2.png',
-        description: 'Team collaboration platform',
-        category: 'Collaboration'
-      }
-    ],
-    techStack: [
-      { name: 'Angular', url: 'https://angular.io/', category: 'framework' },
-      { name: 'ReactJs', url: 'https://reactjs.org/', category: 'framework' },
-      { name: 'CodeIgniter', url: 'https://codeigniter.com/', category: 'framework' },
-      { name: 'Laravel', url: 'https://laravel.com/', category: 'framework' },
-      { name: 'ExpressJs', url: 'https://expressjs.com/', category: 'framework' },
-      { name: 'Loopback', url: 'https://loopback.io/', category: 'framework' },
-      { name: 'Apache', url: 'https://httpd.apache.org/', category: 'tool' },
-      { name: 'MySQL', url: 'https://www.mysql.com/', category: 'tool' },
-      { name: 'NodeJs', url: 'https://nodejs.org/en/', category: 'framework' },
-      { name: 'Jira', url: 'https://www.atlassian.com/software/jira', category: 'tool' },
-      { name: 'Git', url: 'https://git-scm.com/', category: 'tool' },
-      { name: 'Adobe XD', url: 'https://www.adobe.com/in/products/xd.html', category: 'tool' }
-    ],
-    contact: {
-      phone: '+91 888 267 0684',
-      email: 'shahnshahmalik@protonmail.com',
-      address: {
-        street: 'Okhla',
-        city: 'New Delhi',
-        country: 'India'
-      },
-      social: [
-        {
-          platform: 'Facebook',
-          url: 'https://www.facebook.com/shahenshah.malik.98',
-          icon: 'fab fa-facebook'
-        },
-        {
-          platform: 'Twitter',
-          url: 'https://twitter.com/shah3nshah',
-          icon: 'fab fa-twitter'
-        },
-        {
-          platform: 'Stack Overflow',
-          url: 'https://stackoverflow.com/users/5668376/shahnshah',
-          icon: 'fab fa-stack-overflow'
-        },
-        {
-          platform: 'Medium',
-          url: 'https://medium.com/@luv200',
-          icon: 'fab fa-medium'
-        }
-      ]
+    {
+      id: '2',
+      title: 'E-commerce Marketplace',
+      description: 'Full-stack e-commerce solution with advanced search, payment integration, and vendor management. Optimized for performance and user experience.',
+      image: 'assets/web-development-2.jpg',
+      category: 'E-commerce'
+    },
+    {
+      id: '3',
+      title: 'Project Management Tool',
+      description: 'Collaborative project management platform with real-time updates, team communication, and advanced reporting features. Perfect for remote teams.',
+      image: 'assets/web-development-3.jpg',
+      category: 'Productivity'
+    },
+    {
+      id: '4',
+      title: 'FinTech Dashboard',
+      description: 'Financial technology platform with portfolio tracking, investment analytics, and risk assessment tools. Secure and compliant with industry standards.',
+      image: 'assets/web-development-4.jpg',
+      category: 'FinTech'
+    },
+    {
+      id: '5',
+      title: 'Learning Management System',
+      description: 'Modern LMS with interactive courses, progress tracking, and certification management. Designed for educational institutions and corporate training.',
+      image: 'assets/web-development-5.jpg',
+      category: 'EdTech'
+    },
+    {
+      id: '6',
+      title: 'Healthcare Portal',
+      description: 'Patient management system with appointment scheduling, medical records, and telemedicine capabilities. HIPAA compliant and user-friendly.',
+      image: 'assets/web-development-6.jpg',
+      category: 'HealthTech'
+    },
+    {
+      id: '7',
+      title: 'Social Media Platform',
+      description: 'Next-generation social platform with advanced privacy controls, content moderation, and community building features. Built for the modern web.',
+      image: 'assets/web-development-7.jpg',
+      category: 'Social Media'
+    },
+    {
+      id: '8',
+      title: 'AI-Powered CRM',
+      description: 'Customer relationship management system enhanced with AI for lead scoring, automated workflows, and predictive analytics. Boost your sales efficiency.',
+      image: 'assets/web-development-8.jpg',
+      category: 'AI/CRM'
     }
+  ];
+
+  private frameworks: TechStack[] = [
+    { name: 'Angular', url: 'https://angular.io', category: 'framework' },
+    { name: 'React', url: 'https://reactjs.org', category: 'framework' },
+    { name: 'Vue.js', url: 'https://vuejs.org', category: 'framework' },
+    { name: 'Next.js', url: 'https://nextjs.org', category: 'framework' },
+    { name: 'Node.js', url: 'https://nodejs.org', category: 'framework' },
+    { name: 'Express', url: 'https://expressjs.com', category: 'framework' },
+    { name: 'NestJS', url: 'https://nestjs.com', category: 'framework' },
+    { name: 'FastAPI', url: 'https://fastapi.tiangolo.com', category: 'framework' }
+  ];
+
+  private tools: TechStack[] = [
+    { name: 'TypeScript', url: 'https://typescriptlang.org', category: 'tool' },
+    { name: 'JavaScript', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', category: 'tool' },
+    { name: 'Python', url: 'https://python.org', category: 'tool' },
+    { name: 'PostgreSQL', url: 'https://postgresql.org', category: 'tool' },
+    { name: 'MongoDB', url: 'https://mongodb.com', category: 'tool' },
+    { name: 'Redis', url: 'https://redis.io', category: 'tool' },
+    { name: 'Docker', url: 'https://docker.com', category: 'tool' },
+    { name: 'AWS', url: 'https://aws.amazon.com', category: 'tool' },
+    { name: 'Vercel', url: 'https://vercel.com', category: 'tool' },
+    { name: 'Figma', url: 'https://figma.com', category: 'tool' }
+  ];
+
+  private contactInfo: ContactInfo = {
+    email: 'shahenshah.malik@hotmail.com',
+    phone: '+91 9999999999',
+    location: 'New Delhi, India',
+    socialLinks: [
+      { platform: 'GitHub', url: 'https://github.com/shahnshahmalik', icon: 'fab fa-github' },
+      { platform: 'LinkedIn', url: 'https://linkedin.com/in/shahnshahmalik', icon: 'fab fa-linkedin' },
+      { platform: 'Twitter', url: 'https://twitter.com/shahnshahmalik', icon: 'fab fa-twitter' },
+      { platform: 'Dribbble', url: 'https://dribbble.com/shahnshahmalik', icon: 'fab fa-dribbble' }
+    ]
   };
 
-  getPortfolioData(): PortfolioData {
-    return this.portfolioData;
-  }
-
   getProjects(): Project[] {
-    return this.portfolioData.projects;
-  }
-
-  getTechStack(): TechStack[] {
-    return this.portfolioData.techStack;
+    return this.projects;
   }
 
   getFrameworks(): TechStack[] {
-    return this.portfolioData.techStack.filter(tech => tech.category === 'framework');
+    return this.frameworks;
   }
 
   getTools(): TechStack[] {
-    return this.portfolioData.techStack.filter(tech => tech.category === 'tool');
+    return this.tools;
+  }
+
+  getContactInfo(): ContactInfo {
+    return this.contactInfo;
   }
 }

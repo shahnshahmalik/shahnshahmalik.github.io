@@ -19,14 +19,10 @@ export interface SocialLink {
 }
 
 export interface ContactInfo {
-  phone: string;
   email: string;
-  address: {
-    street: string;
-    city: string;
-    country: string;
-  };
-  social: SocialLink[];
+  phone: string;
+  location?: string;
+  socialLinks: SocialLink[];
 }
 
 export interface PortfolioData {

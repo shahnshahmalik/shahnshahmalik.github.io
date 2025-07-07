@@ -122,7 +122,7 @@ import { TechStack } from '../../models/portfolio.interface';
   styles: [`
     .about-section {
       padding: 8rem 4vw;
-      background: var(--mat-sys-surface);
+      background: var(--surface-light);
     }
 
     .container {
@@ -139,8 +139,8 @@ import { TechStack } from '../../models/portfolio.interface';
       font-size: 3rem;
       font-weight: 700;
       margin-bottom: 1rem;
-      color: var(--mat-sys-on-surface);
-      background: linear-gradient(135deg, var(--mat-sys-primary), var(--mat-sys-secondary));
+      color: var(--text-dark);
+      background: linear-gradient(135deg, var(--primary-cyan), var(--secondary-purple));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
