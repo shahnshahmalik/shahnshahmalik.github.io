@@ -1,226 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137235006-3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-137235006-3');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <meta name="robots" content="index, follow">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="7 days">
-    <meta name="application-name" content="Shahnshah's Portfolio [Web Developer | Designer]" />
-
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Shahnshah's Portfolio [Web Developer | Designer]" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-touch-icon" content="/icon.png" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/icons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-
-
-    <meta name="title" content="Shahnshah's portfolio [Web Developer | Designer]">
-    <meta name="description" content="Shahnshah Malik - Freelance Web Designer & Developer based in New Delhi, India. Web Designer and developer">
-    <meta name="keywords" content="development, design, digital marketing, seo, website, shahnshah">
-    <meta name="author" content="Shahnshah">
-
-    <meta property="og:type" content="website" />
-    <meta property="og:image:type" content="image/jpg" />
-    <meta property="og:image:width" content="1000" />
-    <meta property="og:image:height" content="667" />
-    <meta property="og:site_name" content="Shahnshah Malik" />
-    <meta property="og:image" content="/main.png" />
-    <meta property="og:title" content="Shahnshah's portfolio [Web Developer | Designer]" />
-    <meta property="og:description" content="Shahnshah Malik - Freelance Web Designer & Developer based in New Delhi, India. Web Designer and developer" />
-    <meta property="og:url" content="https://shahnshahmalik.github.io" />
-
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="robots" content="all" />
-
-    <title>Shahnshah Malik</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    document.documentElement.classList.add('js');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('reduce');
+    }
+  </script>
+  <title>Shahnshah Malik — Angular developer</title>
+  <meta name="description" content="Shahnshah Malik is a senior Angular developer in New Delhi. Angular front ends for SaaS, including the UI around AI.">
+  <meta name="author" content="Shahnshah Malik">
+  <meta name="theme-color" content="#101210">
+  <link rel="canonical" href="https://shahnshahmalik.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Shahnshah Malik — Angular developer">
+  <meta property="og:description" content="Angular front ends for SaaS, including the UI around AI.">
+  <meta property="og:url" content="https://shahnshahmalik.github.io/">
+  <meta property="og:site_name" content="Shahnshah Malik">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="/icons/apple-icon-180x180.png">
+  <link rel="manifest" href="/manifest.json">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Shahnshah Malik",
+    "jobTitle": "Senior Angular Developer",
+    "address": { "@type": "PostalAddress", "addressLocality": "New Delhi", "addressCountry": "IN" },
+    "email": "shahnshahmalik@protonmail.com",
+    "url": "https://shahnshahmalik.github.io/",
+    "sameAs": [
+      "https://www.linkedin.com/in/shahnshahmalik/",
+      "https://github.com/shahnshahmalik",
+      "https://www.upwork.com/freelancers/~012dfed8a66d5a977a"
+    ]
+  }
+  </script>
 </head>
 <body>
-    <div id="loading">
-        <div id="spinner"></div>
-    </div>
-    <div id="magnify">
-        <h1 onclick="closemagnify()"><i class="fas fa-times"></i></h1>
-        <div id="img_here"></div>
-    </div>
-    <header id="header" class="animated slideInDown" style="animation-delay:1.8s;">
-        <table>
-            <tr>
-                <td id="logo">Shahnshah Malik</td>
-                <td id="navigation">
-                    <a href="#work">work</a>
-                    <a href="#bio">about</a>
-                    <a href="https://medium.com/@luv200" target="_blank">blog</a>
-                    <a href="#contact">contact</a>
-                </td>
-            </tr>
-        </table>
-    </header>
-    <table id="top_part">
-        <tr>
-            <td id="about" class="animated slideInLeft" style="animation-delay:2s;">
-                <h2>Freelance Web Designer & Developer based in New Delhi, India</h2>
-                <p>Highly experienced in designing and developing responsive websites and web applications.</p>
-                <a href="#contact"><button class="btn_one">Contact Me</button></a><br>
-                <table>
-                    <tr>
-                        <td class="animated zoomIn" style="animation-delay:2.2s;"><a class="social" href="https://www.facebook.com/shahenshah.malik.98" title="Shahnshah on Facebook" target="_blank"><i class="fab fa-facebook"></i></a></td>
-                        <td class="animated zoomIn" style="animation-delay:2.4s;"><a class="social" href="https://twitter.com/shah3nshah" title="Shahnshah on Twitter" target="_blank"><i class="fab fa-twitter"></i></a></td>
-                        <td class="animated zoomIn" style="animation-delay:2.8s;"><a class="social" href="https://stackoverflow.com/users/5668376/shahnshah" target="_blank"><i class="fab fa-stack-overflow"></i></a></td>
-                        <td class="animated zoomIn" style="animation-delay:3.0s;"><a class="social" href="https://medium.com/@luv200" title="Shahnshah on Medium" target="_blank"><i class="fab fa-medium"></i></a></td>
-                    </tr>
-                </table>
-            </td>
-            <td id="rightImage" class="animated jackInTheBox" style="animation-delay:2.2s;"></td>
-        </tr>
-    </table>
-    <div id="work">
-        <h1>work</h1>
-        <div id="photos">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/em_i.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/em_m_1.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/em_m_2.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/fn_i.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/fn_m_1.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/fn_m_2.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/ta_m_1.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/ta_m_2.png">
+  <a class="skip" href="#chapter-0">Skip to content</a>
+  <header class="top">
+    <a class="brand" href="#chapter-0">Shahnshah Malik</a>
+    <nav aria-label="Primary">
+      <a href="#chapter-7">Work</a>
+      <a href="#chapter-8">Contact</a>
+    </nav>
+  </header>
+  <nav class="rail" aria-label="Chapters">
+    <ol>
+      <li><a href="#chapter-0" aria-label="Landing">00</a></li>
+      <li><a href="#chapter-1" aria-label="Prompt">01</a></li>
+      <li><a href="#chapter-2" aria-label="Tokens">02</a></li>
+      <li><a href="#chapter-3" aria-label="Embeddings">03</a></li>
+      <li><a href="#chapter-4" aria-label="Attention">04</a></li>
+      <li><a href="#chapter-5" aria-label="Transformer block">05</a></li>
+      <li><a href="#chapter-6" aria-label="Next token">06</a></li>
+      <li><a href="#chapter-7" aria-label="Work">07</a></li>
+      <li><a href="#chapter-8" aria-label="Contact">08</a></li>
+    </ol>
+  </nav>
+  <main>
+    <section class="chapter landing" id="chapter-0" tabindex="-1" data-chapter="0">
+      <div class="stream" aria-hidden="true">
+        <span style="--x:8%;--y:18%;--s:0.85rem;--dur:34s;--d:-6s">token</span>
+        <span style="--x:22%;--y:62%;--s:1.05rem;--dur:40s;--d:-18s">floor</span>
+        <span style="--x:70%;--y:28%;--s:0.8rem;--dur:36s;--d:-9s">validator</span>
+        <span style="--x:84%;--y:70%;--s:1.15rem;--dur:42s;--d:-22s">plan</span>
+        <span style="--x:48%;--y:12%;--s:0.75rem;--dur:30s;--d:-3s">form</span>
+        <span style="--x:14%;--y:78%;--s:0.95rem;--dur:38s;--d:-14s">route</span>
+        <span style="--x:60%;--y:80%;--s:0.85rem;--dur:33s;--d:-27s">occupancy</span>
+        <span style="--x:36%;--y:40%;--s:0.7rem;--dur:44s;--d:-11s">schema</span>
+        <span style="--x:90%;--y:16%;--s:0.9rem;--dur:37s;--d:-20s">guard</span>
+        <span style="--x:4%;--y:42%;--s:1.1rem;--dur:41s;--d:-30s">desk</span>
+        <span style="--x:76%;--y:48%;--s:0.78rem;--dur:35s;--d:-8s">field</span>
+        <span style="--x:30%;--y:88%;--s:0.88rem;--dur:39s;--d:-16s">signal</span>
+        <span style="--x:55%;--y:56%;--s:0.72rem;--dur:46s;--d:-25s">module</span>
+        <span style="--x:18%;--y:8%;--s:0.82rem;--dur:32s;--d:-2s">input</span>
+      </div>
+      <div class="landing-copy">
+        <p class="eyebrow">Senior Angular developer · New Delhi</p>
+        <h1>Shahnshah<br>Malik</h1>
+        <p class="lede">Angular front ends for SaaS, including the UI around AI</p>
+        <a class="scroll-hint" href="#chapter-1">
+          <span>Scroll</span>
+          <span class="scroll-line" aria-hidden="true"></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-1" tabindex="-1" data-chapter="1">
+      <div class="frame">
+        <h2 class="kicker">01 — Prompt</h2>
+        <div class="prompt-grid">
+          <p class="prompt-line">
+            <span style="--i:0">Highlight</span>
+            <span style="--i:1">empty</span>
+            <span style="--i:2">desks</span>
+            <span style="--i:3">on</span>
+            <span style="--i:4">the</span>
+            <span style="--i:5">floor</span>
+            <span style="--i:6">plan</span>
+          </p>
+          <aside class="who">
+            <p class="eyebrow">Who</p>
+            <p class="who-name">Shahnshah Malik</p>
+            <p>Senior Angular developer, New Delhi.</p>
+            <p>Angular front ends for SaaS, including the UI around AI.</p>
+          </aside>
         </div>
-    </div>
-    <div id="bio">
-        <h1>about</h1>
-        <p>
-            Professionally connected with the web development industry and information technology for many years.<br>
-            Here are the Frameworks and Technologies I have experience with:
-            <ul>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://angular.io/">Angular</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://reactjs.org/">ReactJs</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://codeigniter.com/">CodeIgniter</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://laravel.com/">Laravel</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://expressjs.com/">ExpressJs</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://loopback.io/">Loopback</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://httpd.apache.org/">Apache</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://www.mysql.com/">MySQL</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://nodejs.org/en/">NodeJs</a>
-                </li>
-            </ul>
+      </div>
+    </section>
 
-            Tools I've used:
-            <ul>
+    <section class="chapter" id="chapter-2" tabindex="-1" data-chapter="2">
+      <div class="frame">
+        <h2 class="kicker">02 — Tokens</h2>
+        <div class="chips" role="list" aria-label="Sentence split into tokens">
+          <div class="chip" role="listitem" tabindex="0" style="--c:#e0a15c"><span class="word">Highlight</span><span class="tid">id 12847</span></div>
+          <div class="chip" role="listitem" tabindex="0" style="--c:#8fbfa8"><span class="word">empty</span><span class="tid">id 903</span></div>
+          <div class="chip" role="listitem" tabindex="0" style="--c:#e7c07a"><span class="word">desks</span><span class="tid">id 44102</span></div>
+          <div class="chip" role="listitem" tabindex="0" style="--c:#9bb0c9"><span class="word">on</span><span class="tid">id 319</span></div>
+          <div class="chip" role="listitem" tabindex="0" style="--c:#c4a3b5"><span class="word">the</span><span class="tid">id 279</span></div>
+          <div class="chip" role="listitem" tabindex="0" style="--c:#d08b73"><span class="word">floor</span><span class="tid">id 22091</span></div>
+          <div class="chip" role="listitem" tabindex="0" style="--c:#b7c48a"><span class="word">plan</span><span class="tid">id 8871</span></div>
+        </div>
+        <p class="tie">Forms, validators, structured data — split the input into fields you can check.</p>
+      </div>
+    </section>
 
-                <li>
-                    <a class="tech-link" target="_blank" href="https://www.atlassian.com/software/jira">Jira</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://git-scm.com/">Git</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank"
-                        href="https://www.adobe.com/in/products/xd.html?promoid=PYPVQ3HN&mv=other">Adobe XD</a>
-                </li>
-            </ul>
-            </p>
-    </div>
-    <div id="contact">
-        <h1>contact</h1>
-            <table>
-                <tr>
-                    <td>
-                        <div id="inner_div">
-                            <table id="inner_table">
-                                <tr>
-                                    <td><i class="fas fa-phone"></i> &nbsp; +91 888 267 0684</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fas fa-at"></i> &nbsp; shahnshahmalik@protonmail.com</td>
-                                </tr>
-                                 <!-- <tr>
-                                    <td><i class="fas fa-fax"></i> &nbsp; +1 234 567 8910</td>
-                                </tr> -->
-                                <tr>
-                                    <td><i class="fas fa-map-marker-alt"></i>
-                                    <div id="address">
-                                        Okhla,<br>
-                                        New Delhi,<br>
-                                        India
-                                    </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a class="social" href="https://www.facebook.com/shahenshah.malik.98" title="Shahnshah on Facebook" target="_blank"><i class="fab fa-facebook"></i></a>
-                                        <a class="social" href="https://twitter.com/shah3nshah" title="Shahnshah on Twitter" target="_blank"><i class="fab fa-twitter"></i></a>
-                                        <a class="social" href="https://stackoverflow.com/users/5668376/shahnshah" target="_blank"><i class="fab fa-stack-overflow"></i></a>
-                                        <a class="social" href="https://medium.com/@luv200" title="Shahnshah on Medium" target="_blank"><i class="fab fa-medium"></i></a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </td>
-                    <td>
-                        <!-- <form id="contact-form" method="post">
-                            <input type="text" placeholder="name" id="Name" required/>
-                            <input type="email" placeholder="email" id="Email" required/><br>
-                            <textarea placeholder="your message" required rows="5" id="message"></textarea><br>
-                            <button class="btn_one">send</button>
-                        </form>  -->
-                    </td>
-                </tr>
-            </table>
-    </div>
-    <div id="footer">
-         <br> <a href="https://shahnshahmalik.github.io">Shahnshah Malik</a>
-    </div>
-    <script src="index.js" type="text/javascript"></script>
+    <section class="chapter" id="chapter-3" tabindex="-1" data-chapter="3">
+      <div class="frame">
+        <h2 class="kicker">03 — Embeddings</h2>
+        <div class="stage" id="embedding-stage">
+          <div class="fallback">
+            <div class="clusters">
+              <p style="--c:#8fbfa8"><b>Place</b> floor, plan, desks, room, map</p>
+              <p style="--c:#d08b73"><b>Occupancy</b> empty, occupancy, heatmap</p>
+              <p style="--c:#9bb0c9"><b>Suggestions</b> recommend, similar, complete</p>
+              <p class="apart">invoice, button, latency — apart</p>
+            </div>
+            <svg class="diagram" viewBox="0 0 680 420" role="img" aria-labelledby="emb-title">
+              <title id="emb-title">Words plotted so similar meanings sit closer together</title>
+              <g fill="none" stroke="rgba(244,240,232,0.28)" stroke-width="1.25">
+                <path d="M120 150 L190 190 L250 160 L190 190 L160 255 L250 245 L250 160"/>
+                <path d="M160 255 L90 300"/>
+                <path d="M90 300 L55 210 L70 345"/>
+                <path d="M470 130 L545 185 L485 235 L470 130"/>
+              </g>
+              <g fill="#8fbfa8" font-family="Outfit, sans-serif" font-size="16">
+                <circle cx="120" cy="150" r="5"/><text x="132" y="155">map</text>
+                <circle cx="190" cy="190" r="5"/><text x="202" y="195">floor</text>
+                <circle cx="250" cy="160" r="5"/><text x="262" y="165">plan</text>
+                <circle cx="160" cy="255" r="5"/><text x="172" y="260">desks</text>
+                <circle cx="250" cy="245" r="5"/><text x="262" y="250">room</text>
+              </g>
+              <g fill="#d08b73" font-family="Outfit, sans-serif" font-size="16">
+                <circle cx="90" cy="300" r="5"/><text x="102" y="305">empty</text>
+                <circle cx="55" cy="210" r="5"/><text x="67" y="206">occupancy</text>
+                <circle cx="70" cy="345" r="5"/><text x="82" y="350">heatmap</text>
+              </g>
+              <g fill="#9bb0c9" font-family="Outfit, sans-serif" font-size="16">
+                <circle cx="470" cy="130" r="5"/><text x="482" y="135">recommend</text>
+                <circle cx="545" cy="185" r="5"/><text x="557" y="190">similar</text>
+                <circle cx="485" cy="235" r="5"/><text x="497" y="240">complete</text>
+              </g>
+              <g fill="#a9a396" font-family="Outfit, sans-serif" font-size="16">
+                <circle cx="400" cy="360" r="4"/><text x="412" y="365">invoice</text>
+                <circle cx="590" cy="330" r="4"/><text x="602" y="335">button</text>
+                <circle cx="600" cy="70" r="4"/><text x="612" y="75">latency</text>
+              </g>
+            </svg>
+          </div>
+          <div class="webgl-host" hidden></div>
+          <p class="cloud-detail" id="cloud-detail" aria-live="polite">Similar words sit closer.</p>
+          <ul class="legend">
+            <li><i style="background:#8fbfa8"></i>place</li>
+            <li><i style="background:#d08b73"></i>occupancy</li>
+            <li><i style="background:#9bb0c9"></i>suggestions</li>
+          </ul>
+        </div>
+        <p class="tie">Appcarry — recommendations and text completion.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-4" tabindex="-1" data-chapter="4">
+      <div class="frame">
+        <h2 class="kicker">04 — Attention</h2>
+        <p class="tie" style="margin-top:0">This token looks at those.</p>
+        <div class="stage" id="attention-stage">
+          <div class="fallback">
+            <p class="attn-source">desks</p>
+            <ol class="attn-bars" aria-label="Words desks attends to, strongest first">
+              <li><span>empty</span><span class="meter" style="--w:92%"></span></li>
+              <li><span>plan</span><span class="meter" style="--w:81%"></span></li>
+              <li><span>floor</span><span class="meter" style="--w:74%"></span></li>
+              <li><span>Highlight</span><span class="meter" style="--w:34%"></span></li>
+              <li><span>on</span><span class="meter" style="--w:12%"></span></li>
+              <li><span>the</span><span class="meter" style="--w:8%"></span></li>
+            </ol>
+            <svg class="diagram" viewBox="0 0 760 280" role="img" aria-labelledby="attn-title">
+              <title id="attn-title">The token desks attends most strongly to empty, plan, and floor</title>
+              <g fill="none" stroke="#e4a45e" stroke-linecap="round">
+                <path d="M285 168 Q230 48 175 168" stroke-width="8" opacity="0.95"><title>empty</title></path>
+                <path d="M285 168 Q500 28 700 168" stroke-width="7" opacity="0.88"><title>plan</title></path>
+                <path d="M285 168 Q450 62 600 168" stroke-width="6" opacity="0.8"><title>floor</title></path>
+                <path d="M285 168 Q170 96 70 168" stroke-width="2.5" opacity="0.55"><title>Highlight</title></path>
+                <path d="M285 168 Q338 120 390 168" stroke-width="1.6" opacity="0.4"><title>on</title></path>
+                <path d="M285 168 Q390 128 490 168" stroke-width="1.25" opacity="0.32"><title>the</title></path>
+              </g>
+              <circle cx="285" cy="196" r="26" fill="none" stroke="#e4a45e" stroke-width="1.5"/>
+              <g fill="#f4f0e8" font-family="Outfit, sans-serif" font-size="18" text-anchor="middle">
+                <text x="70" y="230">Highlight</text>
+                <text x="175" y="230">empty</text>
+                <text x="285" y="230" fill="#e4a45e">desks</text>
+                <text x="390" y="230">on</text>
+                <text x="490" y="230">the</text>
+                <text x="600" y="230">floor</text>
+                <text x="700" y="230">plan</text>
+              </g>
+            </svg>
+          </div>
+          <div class="webgl-host" hidden></div>
+        </div>
+        <p class="tie">Dashboards and occupancy heatmaps.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-5" tabindex="-1" data-chapter="5">
+      <div class="frame">
+        <h2 class="kicker">05 — Transformer block</h2>
+        <div class="stage" id="block-stage">
+          <div class="fallback stack-2d" id="stack-2d">
+            <div class="pass-dot" aria-hidden="true"></div>
+            <div class="skip-dot" aria-hidden="true"></div>
+            <div class="layer" data-layer="attention">Attention</div>
+            <div class="layer" data-layer="ff">Feed-forward</div>
+            <div class="layer" data-layer="residual">Residual</div>
+          </div>
+          <div class="webgl-host xform-host" hidden>
+            <div class="gl-slot"></div>
+            <ol class="layer-readout">
+              <li data-layer="attention">Attention</li>
+              <li data-layer="ff">Feed-forward</li>
+              <li data-layer="residual">Residual</li>
+            </ol>
+          </div>
+        </div>
+        <p class="micro">one pass</p>
+        <button type="button" class="text-btn" data-motion data-replay="pass">Replay</button>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-6" tabindex="-1" data-chapter="6">
+      <div class="frame">
+        <h2 class="kicker">06 — Next token</h2>
+        <p class="grown" aria-live="polite">
+          <span id="stem">Highlight empty desks on the floor plan</span><span id="added"></span>
+        </p>
+        <ol class="bars" id="bars" aria-label="Next-word probabilities">
+          <li class="is-top">
+            <span class="bw">live</span>
+            <span class="track"><span class="fill" style="--p:0.46"></span></span>
+            <span class="bp">46%</span>
+          </li>
+          <li>
+            <span class="bw">today</span>
+            <span class="track"><span class="fill" style="--p:0.22"></span></span>
+            <span class="bp">22%</span>
+          </li>
+          <li>
+            <span class="bw">now</span>
+            <span class="track"><span class="fill" style="--p:0.14"></span></span>
+            <span class="bp">14%</span>
+          </li>
+          <li>
+            <span class="bw">soon</span>
+            <span class="track"><span class="fill" style="--p:0.10"></span></span>
+            <span class="bp">10%</span>
+          </li>
+          <li>
+            <span class="bw">.</span>
+            <span class="track"><span class="fill" style="--p:0.08"></span></span>
+            <span class="bp">8%</span>
+          </li>
+        </ol>
+        <p class="tie">The top word is written in.</p>
+        <button type="button" class="text-btn" data-motion data-replay="next">Replay</button>
+        <noscript><p class="tie">The line completes as: Highlight empty desks on the floor plan live.</p></noscript>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-7" tabindex="-1" data-chapter="7">
+      <div class="frame">
+        <h2 class="kicker">07 — Work</h2>
+        <p class="work-lead">Selected product work.</p>
+        <div class="work-grid">
+          <article class="work-card">
+            <div class="index-no">01</div>
+            <h3>InnerSpace</h3>
+            <p>FabricJS floor plans and GoodData. Loads about 40% faster.</p>
+          </article>
+          <article class="work-card">
+            <div class="index-no">02</div>
+            <h3>Appcarry</h3>
+            <p>Angular 12 to 17, and the UI around recommendations and text completion.</p>
+          </article>
+          <article class="work-card">
+            <div class="index-no">03</div>
+            <h3>Prospecta</h3>
+            <p>SAP data-governance UI.</p>
+          </article>
+          <article class="work-card">
+            <div class="index-no">04</div>
+            <h3>Estater</h3>
+            <p>Property tools for the GCC.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-8" tabindex="-1" data-chapter="8">
+      <div class="frame">
+        <h2 class="kicker">08 — Contact</h2>
+        <p class="place">New Delhi</p>
+        <ul class="contact-list emails">
+          <li><a href="mailto:shahnshahmalik@protonmail.com">shahnshahmalik@protonmail.com</a></li>
+          <li><a href="mailto:shahenshah.malik@hotmail.com">shahenshah.malik@hotmail.com</a></li>
+        </ul>
+        <ul class="contact-list profiles">
+          <li><a href="https://www.linkedin.com/in/shahnshahmalik/" rel="me noopener noreferrer" target="_blank">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="https://github.com/shahnshahmalik" rel="me noopener noreferrer" target="_blank">GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="https://www.upwork.com/freelancers/~012dfed8a66d5a977a" rel="me noopener noreferrer" target="_blank">Upwork<span class="sr-only"> (opens in a new tab)</span></a></li>
+        </ul>
+        <form class="term" id="term" autocomplete="off">
+          <div class="term-line">
+            <span class="ps1" aria-hidden="true">visitor@delhi:~$</span>
+            <label class="sr-only" for="term-input">Command. Try hire or resume.</label>
+            <input id="term-input" name="command" spellcheck="false" autocapitalize="off" placeholder="hire or resume">
+          </div>
+          <pre class="term-log" id="term-log" role="log" aria-live="polite"></pre>
+          <p class="term-hint">Optional. Try hire or resume.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script type="application/json" id="model-data">
+  {
+    "cloud": [
+      {"word":"floor","color":"#8fbfa8","x":-0.15,"y":0.35,"z":0.1,"near":"near plan and map"},
+      {"word":"plan","color":"#8fbfa8","x":0.55,"y":0.05,"z":-0.25,"near":"near floor and room"},
+      {"word":"desks","color":"#e7c07a","x":-0.55,"y":-0.2,"z":0.45,"near":"near empty and floor"},
+      {"word":"room","color":"#8fbfa8","x":0.25,"y":-0.55,"z":0.4,"near":"near plan and desks"},
+      {"word":"map","color":"#8fbfa8","x":-0.95,"y":0.75,"z":-0.15,"near":"near floor"},
+      {"word":"empty","color":"#e4a45e","x":-1.2,"y":-0.7,"z":0.05,"near":"near desks and occupancy"},
+      {"word":"occupancy","color":"#d08b73","x":-1.6,"y":0.2,"z":-0.5,"near":"near heatmap and empty"},
+      {"word":"heatmap","color":"#d08b73","x":-1.15,"y":-1.1,"z":-0.2,"near":"near occupancy"},
+      {"word":"recommend","color":"#9bb0c9","x":1.75,"y":0.95,"z":-0.3,"near":"near similar and complete"},
+      {"word":"similar","color":"#9bb0c9","x":2.2,"y":0.35,"z":0.3,"near":"near recommend and complete"},
+      {"word":"complete","color":"#9bb0c9","x":1.45,"y":1.3,"z":0.45,"near":"near recommend"},
+      {"word":"invoice","color":"#a9a396","x":-1.9,"y":-1.55,"z":-0.85,"near":"far from the floor-plan words"},
+      {"word":"button","color":"#a9a396","x":2.05,"y":-1.35,"z":0.6,"near":"far from the floor-plan words"},
+      {"word":"latency","color":"#a9a396","x":0.4,"y":-1.7,"z":-1.1,"near":"far from the floor-plan words"}
+    ],
+    "attention": [
+      {"word":"Highlight","weight":0.34,"x":-3.15,"y":0.2,"z":-0.35},
+      {"word":"empty","weight":0.92,"x":-2.1,"y":0.55,"z":0.15},
+      {"word":"desks","weight":1,"x":-1.05,"y":0.15,"z":0.5,"source":true},
+      {"word":"on","weight":0.12,"x":0.15,"y":-0.1,"z":-0.2},
+      {"word":"the","weight":0.08,"x":1.2,"y":0.12,"z":-0.4},
+      {"word":"floor","weight":0.74,"x":2.25,"y":0.48,"z":0.1},
+      {"word":"plan","weight":0.81,"x":3.25,"y":0.12,"z":0.25}
+    ],
+    "steps": [
+      {
+        "add": " live",
+        "options": [
+          {"word":"live","p":0.46},
+          {"word":"today","p":0.22},
+          {"word":"now","p":0.14},
+          {"word":"soon","p":0.1},
+          {"word":".","p":0.08}
+        ]
+      },
+      {
+        "add": ".",
+        "options": [
+          {"word":".","p":0.61},
+          {"word":"now","p":0.16},
+          {"word":"for","p":0.12},
+          {"word":"across","p":0.07},
+          {"word":"today","p":0.04}
+        ]
+      }
+    ]
+  }
+  </script>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
