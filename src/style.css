@@ -19,7 +19,7 @@ body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
-  background: var(--night);
+  background: var(--sky-bg, var(--night));
 }
 
 body {
@@ -39,9 +39,7 @@ body:has(.fallback) {
   position: fixed;
   inset: 0;
   overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 38%, #1a2148 0%, transparent 58%),
-    linear-gradient(#070814 0%, #12183a 46%, #0c1024 100%);
+  background: var(--sky-bg, #070814);
 }
 
 #stage {
@@ -140,6 +138,70 @@ body:has(.fallback) {
   font-size: 15px;
   line-height: 1.4;
   max-width: 38ch;
+}
+
+.when {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #8ee0d0;
+}
+
+.resume {
+  pointer-events: auto;
+  display: inline-block;
+  margin-top: 12px;
+  color: #1a1208;
+  background: var(--gold);
+  border: 3px solid #1a1208;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+  padding: 6px 10px 5px;
+  font-family: "Silkscreen", ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.resume:hover,
+.resume:focus-visible {
+  background: var(--gold-2);
+}
+
+html[data-period="day"] .hud,
+html[data-period="morning"] .hud {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+html[data-period="day"] .when,
+html[data-period="morning"] .when {
+  color: #0c4a62;
+}
+
+html[data-period="day"] .hud h1,
+html[data-period="morning"] .hud h1 {
+  color: #142033;
+}
+
+html[data-period="day"] .role,
+html[data-period="morning"] .role {
+  color: #8a3e12;
+}
+
+html[data-period="day"] .pitch,
+html[data-period="morning"] .pitch {
+  color: #1a3050;
+}
+
+html[data-period="day"] #stage::after,
+html[data-period="morning"] #stage::after {
+  background: radial-gradient(ellipse at 50% 42%, transparent 56%, rgba(30, 80, 120, 0.18) 100%);
+}
+
+html[data-period="dusk"] #stage::after {
+  background: radial-gradient(ellipse at 50% 46%, transparent 46%, rgba(48, 12, 18, 0.38) 100%);
 }
 
 .inventory {

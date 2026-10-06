@@ -1,4 +1,6 @@
-/** Original pixel diorama. A rainy-night floating island, drawn into a fixed viewport. */
+/** Original pixel diorama. A floating island whose light follows the visitor's local time. */
+
+import { sampleNow, type Palette, type Period } from './time';
 
 export const DESIGN_W = 320;
 export const DESIGN_H = 180;
@@ -37,49 +39,101 @@ export const SPOTS: readonly Spot[] = [
 
 type RGB = [number, number, number];
 
-const SKY_TOP: RGB = [8, 10, 24];
-const SKY_MID: RGB = [22, 30, 68];
-const SKY_HORIZON: RGB = [36, 44, 88];
-const SKY_ABYSS: RGB = [6, 7, 16];
+let SKY_TOP: RGB = [8, 10, 24];
+let SKY_MID: RGB = [22, 30, 68];
+let SKY_HORIZON: RGB = [36, 44, 88];
+let SKY_ABYSS: RGB = [6, 7, 16];
 const STAR: RGB = [232, 236, 250];
 const STAR_DIM: RGB = [150, 164, 204];
 const MOON: RGB = [238, 242, 250];
 const MOON_SHADE: RGB = [176, 190, 214];
 const MOON_CRATER: RGB = [148, 164, 190];
 const MOON_GLOW: RGB = [64, 76, 124];
-const CLOUD: RGB = [30, 38, 78];
-const CLOUD_LITE: RGB = [54, 64, 114];
-const HILL: RGB = [12, 14, 32];
-const HILL_FAR: RGB = [20, 24, 48];
-const GRASS: RGB = [40, 116, 58];
-const GRASS_DARK: RGB = [24, 72, 40];
-const GRASS_LITE: RGB = [92, 176, 82];
-const GRASS_WARM: RGB = [124, 138, 52];
+let CLOUD: RGB = [30, 38, 78];
+let CLOUD_LITE: RGB = [54, 64, 114];
+let HILL: RGB = [12, 14, 32];
+let HILL_FAR: RGB = [20, 24, 48];
+let GRASS: RGB = [40, 116, 58];
+let GRASS_DARK: RGB = [24, 72, 40];
+let GRASS_LITE: RGB = [92, 176, 82];
+let GRASS_WARM: RGB = [124, 138, 52];
 const DIRT: RGB = [84, 58, 44];
-const ROCK: RGB = [62, 56, 78];
-const ROCK_DARK: RGB = [34, 30, 48];
-const ROCK_LITE: RGB = [98, 92, 120];
-const ROCK_EDGE: RGB = [20, 16, 30];
-const WATER: RGB = [14, 64, 80];
-const WATER_DEEP: RGB = [8, 36, 52];
-const WATER_LITE: RGB = [52, 150, 158];
+let ROCK: RGB = [62, 56, 78];
+let ROCK_DARK: RGB = [34, 30, 48];
+let ROCK_LITE: RGB = [98, 92, 120];
+let ROCK_EDGE: RGB = [20, 16, 30];
+let WATER: RGB = [14, 64, 80];
+let WATER_DEEP: RGB = [8, 36, 52];
+let WATER_LITE: RGB = [52, 150, 158];
 const ORB: RGB = [64, 230, 210];
 const ORB_HOT: RGB = [226, 255, 248];
 const ORB_DIM: RGB = [18, 110, 122];
 const FALL: RGB = [78, 206, 212];
 const FALL_HI: RGB = [214, 246, 248];
 const MIST: RGB = [110, 170, 180];
-const ROOF: RGB = [44, 54, 78];
-const ROOF_LITE: RGB = [84, 100, 132];
-const ROOF_EDGE: RGB = [22, 26, 40];
-const WALL: RGB = [116, 100, 108];
-const WALL_DARK: RGB = [70, 56, 68];
+let ROOF: RGB = [44, 54, 78];
+let ROOF_LITE: RGB = [84, 100, 132];
+let ROOF_EDGE: RGB = [22, 26, 40];
+let WALL: RGB = [116, 100, 108];
+let WALL_DARK: RGB = [70, 56, 68];
 const TIMBER: RGB = [54, 36, 38];
 const DOOR: RGB = [48, 30, 26];
 const DOOR_LITE: RGB = [96, 60, 42];
 const KNOB: RGB = [232, 184, 92];
-const WIN: RGB = [255, 166, 46];
-const WIN_HOT: RGB = [255, 230, 156];
+let WIN: RGB = [255, 166, 46];
+let WIN_HOT: RGB = [255, 230, 156];
+
+let starAmt = 1;
+let rainAmt = 1;
+let glowStrength = 1;
+let lampLit = 1;
+let celestial: 'sun' | 'moon' = 'moon';
+let sunAtX = 156;
+let sunAtY = 18;
+let sunCore: RGB = [255, 250, 220];
+let sunGlow: RGB = [255, 232, 140];
+
+function applyPalette(p: Palette): void {
+  SKY_TOP = p.skyTop;
+  SKY_MID = p.skyMid;
+  SKY_HORIZON = p.skyHorizon;
+  SKY_ABYSS = p.skyAbyss;
+  CLOUD = p.cloud;
+  CLOUD_LITE = p.cloudLite;
+  HILL = p.hill;
+  HILL_FAR = p.hillFar;
+  GRASS = p.grass;
+  GRASS_DARK = p.grassDark;
+  GRASS_LITE = p.grassLite;
+  GRASS_WARM = p.grassWarm;
+  ROCK = p.rock;
+  ROCK_DARK = p.rockDark;
+  ROCK_LITE = p.rockLite;
+  ROCK_EDGE = p.rockEdge;
+  WATER = p.water;
+  WATER_DEEP = p.waterDeep;
+  WATER_LITE = p.waterLite;
+  ROOF = p.roof;
+  ROOF_LITE = p.roofLite;
+  ROOF_EDGE = p.roofEdge;
+  WALL = p.wall;
+  WALL_DARK = p.wallDark;
+  TREE = p.tree;
+  TREE_LITE = p.treeLite;
+  WIN = p.win;
+  WIN_HOT = p.winHot;
+  LANTERN = p.lantern;
+  LANTERN_DIM = p.lanternDim;
+  starAmt = p.star;
+  rainAmt = p.rainAmt;
+  glowStrength = p.glow;
+  lampLit = p.lamp;
+  celestial = p.celestial;
+  sunAtX = p.sunX;
+  sunAtY = p.sunY;
+  sunCore = p.sunCore;
+  sunGlow = p.sunGlow;
+}
 const WIN_FRAME: RGB = [36, 24, 22];
 const CHIMNEY: RGB = [88, 60, 56];
 const CHIMNEY_DARK: RGB = [48, 34, 34];
@@ -104,10 +158,10 @@ const UMBRELLA: RGB = [190, 48, 44];
 const UMB_DARK: RGB = [112, 28, 32];
 const UMB_LITE: RGB = [232, 112, 86];
 const UMB_POLE: RGB = [72, 54, 48];
-const TREE: RGB = [34, 28, 42];
-const TREE_LITE: RGB = [66, 58, 78];
-const LANTERN: RGB = [255, 198, 86];
-const LANTERN_DIM: RGB = [140, 86, 40];
+let TREE: RGB = [34, 28, 42];
+let TREE_LITE: RGB = [66, 58, 78];
+let LANTERN: RGB = [255, 198, 86];
+let LANTERN_DIM: RGB = [140, 86, 40];
 const CRYSTAL: RGB = [46, 214, 222];
 const CRYSTAL_HOT: RGB = [196, 255, 250];
 const CRYSTAL_MAG: RGB = [220, 92, 176];
@@ -383,6 +437,35 @@ function drawMoon(buf: Pix, cx: number, cy: number): void {
   }
 }
 
+function drawSun(buf: Pix, cx: number, cy: number): void {
+  const glowR = 20;
+  for (let y = -glowR; y <= glowR; y++) {
+    for (let x = -glowR; x <= glowR; x++) {
+      const d2 = x * x + y * y;
+      if (d2 > glowR * glowR || d2 < 10 * 10) continue;
+      if (hash(cx + x, cy + y) % 2 !== 0) continue;
+      buf.set(cx + x, cy + y, sunGlow);
+    }
+  }
+  const r = 8;
+  for (let y = -r; y <= r; y++) {
+    for (let x = -r; x <= r; x++) {
+      if (x * x + y * y > r * r) continue;
+      const shade = x < -2 && y > 1;
+      buf.set(cx + x, cy + y, shade ? mix(sunCore, sunGlow, 0.35) : sunCore);
+    }
+  }
+  const rays: Array<[number, number]> = [
+    [0, -1],
+    [0, 1],
+    [-1, 0],
+    [1, 0],
+  ];
+  for (const [dx, dy] of rays) {
+    for (let i = r + 2; i <= r + 8; i += 2) buf.set(cx + dx * i, cy + dy * i, sunCore);
+  }
+}
+
 function drawHills(buf: Pix, groundBuf: number): void {
   for (let x = 0; x < buf.w; x++) {
     const far = 8 + Math.round(Math.sin(x * 0.02 + 0.6) * 5 + Math.sin(x * 0.008) * 7);
@@ -408,7 +491,7 @@ function warmAmount(x: number): number {
     const d = Math.abs(x - sx);
     if (d < rad) m = Math.max(m, amp * (1 - d / rad));
   }
-  return m;
+  return m * glowStrength;
 }
 
 function drawIsland(layer: Layer): void {
@@ -580,7 +663,7 @@ function drawHouse(layer: Layer, frame: number): { chimneyX: number; chimneyY: n
   layer.rect(doorX, base - 15, 11, 14, DOOR);
   layer.vline(doorX, base - 15, 14, DOOR_LITE);
   layer.set(doorX + 8, base - 8, KNOB);
-  layer.vline(doorX + 10, base - 13, 8, WIN);
+  layer.vline(doorX + 10, base - 13, 8, glowStrength > 0.5 ? [255, 166, 46] : [78, 68, 62]);
   layer.hline(doorX - 2, base, 15, STONE);
 
   return { chimneyX: chimneyX + 3, chimneyY: chimneyTop - 1 };
@@ -591,8 +674,10 @@ function drawLamp(layer: Layer, frame: number): void {
   layer.vline(LAMP_X, ground - 24, 24, TIMBER);
   layer.vline(LAMP_X + 1, ground - 24, 24, [78, 56, 50]);
   layer.rect(LAMP_X - 3, ground - 28, 8, 5, [36, 28, 26]);
-  const hot = (frame >> 3) % 6 !== 0;
-  layer.rect(LAMP_X - 2, ground - 27, 6, 3, hot ? WIN_HOT : WIN);
+  const lit = lampLit > 0.5;
+  const hot = lit && (frame >> 3) % 6 !== 0;
+  const glass: RGB = lit ? (hot ? [255, 230, 156] : [255, 186, 70]) : [72, 64, 58];
+  layer.rect(LAMP_X - 2, ground - 27, 6, 3, glass);
 }
 
 function drawMailbox(layer: Layer): void {
@@ -686,13 +771,15 @@ function drawCharacter(layer: Layer, frame: number): void {
     layer.set(x + 6, foot - 20, EYE);
   }
 
-  const uy = foot - 31;
-  layer.vline(x + 14, uy, foot - uy - 1, UMB_POLE);
-  layer.hline(x - 1, uy, 20, UMB_DARK);
-  layer.hline(x - 3, uy + 1, 24, UMBRELLA);
-  layer.hline(x - 4, uy + 2, 26, UMBRELLA);
-  layer.hline(x - 3, uy + 3, 24, UMB_LITE);
-  layer.hline(x - 1, uy + 4, 20, UMB_DARK);
+  if (rainAmt > 0.45) {
+    const uy = foot - 31;
+    layer.vline(x + 14, uy, foot - uy - 1, UMB_POLE);
+    layer.hline(x - 1, uy, 20, UMB_DARK);
+    layer.hline(x - 3, uy + 1, 24, UMBRELLA);
+    layer.hline(x - 4, uy + 2, 26, UMBRELLA);
+    layer.hline(x - 3, uy + 3, 24, UMB_LITE);
+    layer.hline(x - 1, uy + 4, 20, UMB_DARK);
+  }
 }
 
 function drawTree(layer: Layer): { wireFrom: [number, number]; wireTo: [number, number] } {
@@ -826,6 +913,12 @@ export class IslandScene {
   private chimneyX = 180;
   private chimneyY = 46;
   private fireY = 80;
+  private lastKey = '';
+  onTime: ((period: Period, label: string, sky: string) => void) | null = null;
+
+  redraw(): void {
+    this.render();
+  }
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -895,6 +988,13 @@ export class IslandScene {
   private render(): void {
     const buf = this.buf;
     if (!buf) return;
+    const sample = sampleNow();
+    applyPalette(sample.palette);
+    const key = `${sample.period}:${sample.skyCss}`;
+    if (key !== this.lastKey) {
+      this.lastKey = key;
+      this.onTime?.(sample.period, sample.label, sample.skyCss);
+    }
     const { bw, bh, ox, oy } = this.layout;
     const groundBuf = oy + 104;
 
@@ -907,7 +1007,7 @@ export class IslandScene {
     }
 
     const rng = mulberry32(99);
-    const stars = Math.floor((bw * bh) / 220);
+    const stars = Math.floor(((bw * bh) / 220) * starAmt);
     for (let i = 0; i < stars; i++) {
       const x = (rng() * bw) | 0;
       const y = (rng() * Math.max(8, groundBuf - 6)) | 0;
@@ -923,7 +1023,8 @@ export class IslandScene {
       }
     }
 
-    drawMoon(buf, ox + 246, oy + 26);
+    if (celestial === 'sun') drawSun(buf, ox + Math.round(sunAtX), oy + Math.round(sunAtY));
+    else drawMoon(buf, ox + 246, oy + 26);
     cloud(buf, ox + 214, oy + 16, 34, 7);
     cloud(buf, ox + 18, oy + 28, 40, 8);
     cloud(buf, ox + 96, oy + 14, 26, 6);
@@ -936,8 +1037,10 @@ export class IslandScene {
     }
 
     drawHills(buf, groundBuf);
-    const lampGround = groundAt(LAMP_X);
-    drawCone(buf, ox, oy, LAMP_X, lampGround - 24, 22, 14, this.frame);
+    if (lampLit > 0.5) {
+      const lampGround = groundAt(LAMP_X);
+      drawCone(buf, ox, oy, LAMP_X, lampGround - 24, 22, 14, this.frame);
+    }
 
     this.mask.fill(0);
     const layer = new Layer(buf, ox, oy, this.mask);
@@ -967,7 +1070,7 @@ export class IslandScene {
     drawMarker(layer, FIRE_X + 6, groundAt(FIRE_X) - 28, this.frame);
     drawMarker(layer, MAIL_X + 4, groundAt(MAIL_X) - 26, this.frame);
 
-    this.drawRain(buf);
+    if (rainAmt > 0.45) this.drawRain(buf);
     this.ctx.putImageData(buf.img, 0, 0);
   }
 

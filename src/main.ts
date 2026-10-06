@@ -16,6 +16,14 @@ const root: HTMLElement = world;
 const dimmer: HTMLElement = backdrop;
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const scene = new IslandScene(canvas, reduced);
+const periodEl = document.getElementById('period');
+const theme = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+scene.onTime = (period, label, sky) => {
+  document.documentElement.dataset.period = period;
+  document.documentElement.style.setProperty('--sky-bg', sky);
+  if (periodEl) periodEl.textContent = label;
+  if (theme) theme.content = sky;
+};
 
 const PANELS: PanelId[] = ['about', 'work', 'contact'];
 let current: PanelId | null = null;
@@ -151,6 +159,7 @@ motion.addEventListener('change', () => {
 
 scene.start();
 placeSpots();
+if (reduced) window.setInterval(() => scene.redraw(), 60_000);
 
 const initial = readHash();
 if (initial) {
