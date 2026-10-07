@@ -1,91 +1,260 @@
-var width = $(window).width(); 
-window.onscroll = function(){
-if ((width >= 1000)){
-    if(document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-        $("#header").css("background","#fff");
-        $("#header").css("color","#000");
-        $("#header").css("box-shadow","0px 0px 20px rgba(0,0,0,0.09)");
-        $("#header").css("padding","4vh 4vw");
-        $("#navigation a").hover(function(){
-            $(this).css("border-bottom","2px solid rgb(255, 44, 90)");
-        },function(){
-            $(this).css("border-bottom","2px solid transparent");
-        });
-    }else{
-        $("#header").css("background","transparent");
-        $("#header").css("color","#fff");
-        $("#header").css("box-shadow","0px 0px 0px rgba(0,0,0,0)");
-        $("#header").css("padding","6vh 4vw");
-        $("#navigation a").hover(function(){
-            $(this).css("border-bottom","2px solid #fff");
-        },function(){
-            $(this).css("border-bottom","2px solid transparent");
-        });
-    }
-}
-}
+(function () {
+  "use strict";
 
-function magnify(imglink){
-    $("#img_here").css("background",`url('${imglink}') center center`);
-    $("#magnify").css("display","flex");
-    $("#magnify").addClass("animated fadeIn");
-    setTimeout(function(){
-        $("#magnify").removeClass("animated fadeIn");
-    },800);
-}
+  var SPAN = 104;
+  var CHAPTERS = [
+    { name: "Estater", start: 0, end: 27 },
+    { name: "Prospecta", start: 32, end: 55 },
+    { name: "Appcarry", start: 27, end: 80 },
+    { name: "Upwork", start: 55, end: 104 }
+  ];
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-function closemagnify(){
-    $("#magnify").addClass("animated fadeOut");
-    setTimeout(function(){
-        $("#magnify").css("display","none");
-        $("#magnify").removeClass("animated fadeOut");
-        $("#img_here").css("background",`url('') center center`);
-    },800);
-}
+  function dateFromIndex(index) {
+    var abs = 2018 * 12 + 1 + index;
+    return { year: Math.floor(abs / 12), month: abs % 12 };
+  }
 
-setTimeout(function(){
-    $("#loading").addClass("animated fadeOut");
-    setTimeout(function(){
-      $("#loading").removeClass("animated fadeOut");
-      $("#loading").css("display","none");
-    },800);
-},1650);
+  function bindTabs(root) {
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+    var vertical = root.getAttribute("data-orientation") === "vertical";
+    if (!tabs.length) return;
 
-$(document).ready(function(){
-    $("a").on('click', function(event) {
-      if (this.hash !== "") {
-        event.preventDefault();
-        var hash = this.hash;
-        $('body,html').animate({
-        scrollTop: $(hash).offset().top
-        }, 1800, function(){
-        window.location.hash = hash;
-       });
-       } 
+    function activate(tab, focus) {
+      tabs.forEach(function (item) {
+        var on = item === tab;
+        item.setAttribute("aria-selected", on ? "true" : "false");
+        item.tabIndex = on ? 0 : -1;
+        var panel = document.getElementById(item.getAttribute("aria-controls"));
+        if (!panel) return;
+        panel.classList.toggle("is-active", on);
+        panel.hidden = !on;
       });
+      if (focus) tab.focus();
+    }
 
+    tabs.forEach(function (tab, index) {
+      tab.addEventListener("click", function () {
+        activate(tab, false);
+      });
+      tab.addEventListener("keydown", function (event) {
+        var key = event.key;
+        var next = null;
+        if (vertical && (key === "ArrowDown" || key === "ArrowUp")) {
+          next = key === "ArrowDown" ? tabs[(index + 1) % tabs.length] : tabs[(index - 1 + tabs.length) % tabs.length];
+        }
+        if (!vertical && (key === "ArrowRight" || key === "ArrowLeft")) {
+          next = key === "ArrowRight" ? tabs[(index + 1) % tabs.length] : tabs[(index - 1 + tabs.length) % tabs.length];
+        }
+        if (key === "Home") next = tabs[0];
+        if (key === "End") next = tabs[tabs.length - 1];
+        if (!next) return;
+        event.preventDefault();
+        activate(next, true);
+      });
+    });
 
-      //send mail using this function
-      $("#contact-form").submit(function(e) {
-        var form = $(this);
-        // $('#submit_button').html('<button class="btn btn-primary btn-contact"><i class="fa fa-spinner fa-spin"></i> Sending</button>');
-        $.ajax({
-               type: "POST",
-               url: 'mail/send_mail.php',
-               data: form.serialize(), // serializes the form's elements.
-               success: function(data)
-               {
-                   if(data.trim() == 1){
-                   alert('Query sent successfully');
-                   $('#contact-form')[0].reset();
-                   }else{
-                //    alert('Something went wrong');
-                   }
-                //    $('#submit_button').html('<button type="submit" class="btn btn-primary btn-contact">Submit</button>');
-               }
-             });
-    
-        e.preventDefault(); // avoid to execute the actual submit of the form.
+    var current = tabs.find(function (tab) {
+      return tab.getAttribute("aria-selected") === "true";
+    }) || tabs[0];
+    activate(current, false);
+  }
+
+  document.querySelectorAll("[data-tabs]").forEach(bindTabs);
+
+  var register = document.querySelector("[data-register]");
+  var trackHost = register && register.querySelector("[data-track]");
+  var scrub = register && register.querySelector("[data-scrub]");
+  var scrubLabel = register && register.querySelector("[data-scrub-label]");
+  function placeScrub(event) {
+    if (!trackHost || !scrub) return;
+    if (event.pointerType === "touch") return;
+    var track = trackHost.querySelector(".lane-track");
+    if (!track) return;
+    var trackRect = track.getBoundingClientRect();
+    var hostRect = trackHost.getBoundingClientRect();
+    if (event.clientX < trackRect.left || event.clientX > trackRect.right) {
+      scrub.hidden = true;
+      register.classList.remove("is-scrubbing");
+      return;
+    }
+    var ratio = (event.clientX - trackRect.left) / trackRect.width;
+    ratio = Math.min(1, Math.max(0, ratio));
+    var month = Math.round(ratio * SPAN);
+    var when = dateFromIndex(month);
+    var active = CHAPTERS.filter(function (chapter) {
+      return month >= chapter.start && month <= chapter.end;
+    }).map(function (chapter) {
+      return chapter.name;
+    });
+    var x = trackRect.left - hostRect.left + ratio * trackRect.width;
+    scrub.style.setProperty("--x", x + "px");
+    scrubLabel.textContent = MONTHS[when.month] + " " + when.year + " · " + (active.join(" · ") || "—");
+    scrub.classList.toggle("is-left", ratio < 0.18);
+    scrub.classList.toggle("is-right", ratio > 0.72);
+    scrub.hidden = false;
+    register.classList.add("is-scrubbing");
+  }
+
+  if (trackHost) {
+    trackHost.addEventListener("pointermove", placeScrub);
+    trackHost.addEventListener("pointerleave", function () {
+      scrub.hidden = true;
+      register.classList.remove("is-scrubbing");
+    });
+  }
+
+  var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var lanes = document.querySelector(".lanes");
+  if (lanes && !motion.matches && "IntersectionObserver" in window) {
+    lanes.classList.add("will-draw");
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        lanes.classList.add("is-in");
+        observer.disconnect();
+      });
+    }, { threshold: 0.35 });
+    observer.observe(lanes);
+  }
+
+  var toggle = document.querySelector(".nav-toggle");
+  var rail = document.querySelector(".rail");
+  var panel = document.getElementById("rail-panel");
+  var desktop = window.matchMedia("(min-width: 981px)");
+
+  function closeNav(returnFocus) {
+    if (!rail || !toggle) return;
+    rail.classList.remove("is-open");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("nav-open");
+    if (returnFocus) toggle.focus();
+  }
+
+  function openNav() {
+    rail.classList.add("is-open");
+    toggle.setAttribute("aria-expanded", "true");
+    document.body.classList.add("nav-open");
+    var first = panel.querySelector("a");
+    if (first) first.focus();
+  }
+
+  if (toggle && rail && panel) {
+    toggle.addEventListener("click", function () {
+      if (rail.classList.contains("is-open")) closeNav(false);
+      else openNav();
+    });
+    panel.addEventListener("click", function (event) {
+      if (event.target.closest("a")) closeNav(false);
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && rail.classList.contains("is-open")) closeNav(true);
+    });
+    desktop.addEventListener("change", function () {
+      if (desktop.matches) closeNav(false);
+    });
+  }
+
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".rail-nav a"));
+  var sections = navLinks.map(function (link) {
+    return document.querySelector(link.getAttribute("href"));
+  }).filter(Boolean);
+
+  function spy() {
+    if (!sections.length) return;
+    var mark = window.scrollY + 140;
+    var current = sections[0];
+    sections.forEach(function (section) {
+      var top = section.getBoundingClientRect().top + window.scrollY;
+      if (top <= mark) current = section;
+    });
+    navLinks.forEach(function (link) {
+      var on = link.getAttribute("href") === "#" + current.id;
+      if (on) link.setAttribute("aria-current", "true");
+      else link.removeAttribute("aria-current");
+    });
+  }
+
+  spy();
+  window.addEventListener("scroll", spy, { passive: true });
+
+  var ADDRESS = "shahenshah.malik@hotmail.com";
+
+  function copyWithCommand(value) {
+    var active = document.activeElement;
+    var area = document.createElement("textarea");
+    area.value = value;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "0";
+    area.style.left = "0";
+    area.style.width = "1px";
+    area.style.height = "1px";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+    area.setSelectionRange(0, value.length);
+    var ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch (err) {
+      ok = false;
+    }
+    document.body.removeChild(area);
+    if (active && active !== area && typeof active.focus === "function") active.focus();
+    return ok;
+  }
+
+  function selectVisibleAddress(group) {
+    var node = (group && group.querySelector(".email")) || document.querySelector(".email");
+    if (!node) return;
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  function showEmailResult(group, trigger, ok) {
+    var note = group && group.querySelector("[data-email-status]");
+    if (note) {
+      note.textContent = ok
+        ? "Copied " + ADDRESS
+        : "Could not copy automatically. The address is selected — press ⌘C.";
+    }
+    if (!ok) selectVisibleAddress(group);
+    if (!trigger) return;
+    trigger.classList.toggle("is-copied", ok);
+    if (trigger.hasAttribute("data-copy")) {
+      trigger.textContent = ok ? "Copied" : "Copy address";
+    } else if (!trigger.classList.contains("email")) {
+      if (!trigger.dataset.label) trigger.dataset.label = "Email";
+      trigger.textContent = ok ? "Copied" : trigger.dataset.label;
+    }
+    window.clearTimeout(trigger._emailTimer);
+    if (trigger.hasAttribute("data-copy")) return;
+    trigger._emailTimer = window.setTimeout(function () {
+      trigger.classList.remove("is-copied");
+      if (trigger.dataset.label && !trigger.classList.contains("email")) trigger.textContent = trigger.dataset.label;
+    }, 6000);
+  }
+
+  document.querySelectorAll("[data-email], [data-copy]").forEach(function (control) {
+    control.addEventListener("click", function () {
+      var value = control.getAttribute("data-email") || control.getAttribute("data-copy");
+      var group = control.closest("[data-email-group]");
+      var legacyOk = copyWithCommand(value);
+      if (legacyOk) showEmailResult(group, control, true);
+      if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(function () {
+          showEmailResult(group, control, true);
+        }, function () {
+          if (!legacyOk) showEmailResult(group, control, false);
+        });
+        return;
+      }
+      if (!legacyOk) showEmailResult(group, control, false);
     });
   });
-  
+})();
