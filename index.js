@@ -6,7 +6,7 @@
     { name: "Estater", start: 0, end: 27 },
     { name: "Prospecta", start: 32, end: 55 },
     { name: "Appcarry", start: 27, end: 80 },
-    { name: "InnerSpace", start: 55, end: 104 }
+    { name: "Upwork", start: 55, end: 104 }
   ];
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
