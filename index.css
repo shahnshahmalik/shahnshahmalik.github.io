@@ -261,13 +261,33 @@ h1 {
   margin-top: 1.5rem;
 }
 
-.instrument { margin-top: 2.75rem; }
+#practice {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "hero"
+    "head"
+    "list"
+    "panels";
+  align-items: start;
+}
+
+.hero-copy { grid-area: hero; min-width: 0; }
+
+.practice-stage { display: contents; }
+
+.practice-list { grid-area: list; min-width: 0; }
+
+.practice-panels { grid-area: panels; min-width: 0; }
 
 .instrument-head {
+  grid-area: head;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin-top: 2.75rem;
   padding-bottom: 0.7rem;
   border-bottom: 1px solid var(--ink);
 }
@@ -301,11 +321,13 @@ h1 {
 
 .practice-tab {
   display: grid;
-  grid-template-columns: 1.7rem minmax(0, 1fr) auto;
-  gap: 0.65rem;
-  align-items: baseline;
-  padding: 0.62rem 0.7rem;
+  grid-template-columns: 1.85rem minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: center;
+  min-height: 2.85rem;
+  padding: 0.55rem 0.75rem;
   border-bottom: 1px solid var(--line);
+  transition: background-color 0.16s ease, color 0.16s ease;
 }
 
 .practice-tab .idx {
@@ -315,9 +337,10 @@ h1 {
 }
 
 .practice-tab .label {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.02rem;
+  font-weight: 520;
   letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
 .practice-tab .meta {
@@ -338,7 +361,7 @@ h1 {
 
 .practice-tab[aria-selected="true"] .label { font-weight: 600; }
 
-.panel { padding: 1.15rem 0.15rem 0.25rem; }
+.panel { padding: 1.2rem 0 0.15rem; }
 
 .panel-idx {
   font-size: 0.7rem;
@@ -347,30 +370,34 @@ h1 {
 }
 
 .panel-title {
-  margin-top: 0.3rem;
-  font-size: 1.65rem;
+  margin-top: 0.35rem;
+  font-size: clamp(1.7rem, 2.4vw, 2.15rem);
   font-weight: 560;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.04em;
   line-height: 1.05;
 }
 
 .panel-lead {
-  margin-top: 0.7rem;
+  margin-top: 0.8rem;
   color: var(--muted);
-  font-size: 0.98rem;
-  max-width: 40rem;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  max-width: 38rem;
 }
 
-.spec-list { margin-top: 0.85rem; }
+.spec-list {
+  margin-top: 1.15rem;
+  border-top: 1px solid var(--line);
+}
 
 .spec-list li {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: baseline;
-  padding: 0.34rem 0;
+  padding: 0.58rem 0;
   border-bottom: 1px solid var(--line);
-  font-size: 0.975rem;
+  font-size: 0.98rem;
 }
 
 .spec-list li span:last-child {
@@ -777,13 +804,50 @@ a.btn.is-copied {
 
 @media (min-width: 1180px) {
   #practice {
-    display: grid;
-    grid-template-columns: minmax(16rem, 0.78fr) minmax(0, 1.22fr);
-    column-gap: 3.25rem;
+    grid-template-columns: minmax(19.5rem, 0.92fr) minmax(0, 1.08fr);
+    grid-template-areas:
+      "hero stage"
+      "list stage";
+    column-gap: clamp(2.5rem, 3.6vw, 4.25rem);
+    row-gap: 2.85rem;
     align-items: start;
   }
 
-  .instrument { margin-top: 0.15rem; }
+  .practice-stage {
+    display: flex;
+    flex-direction: column;
+    grid-area: stage;
+    min-width: 0;
+    align-self: start;
+  }
+
+  .instrument-head { margin-top: 0; }
+
+  .practice-list {
+    align-self: stretch;
+  }
+
+  .practice-tab {
+    min-height: 4.2rem;
+    padding: 0.72rem 0.9rem;
+  }
+
+  .panel { padding-top: 1.55rem; }
+
+  .panel-title {
+    font-size: clamp(2.2rem, 2.6vw, 2.85rem);
+    margin-top: 0.45rem;
+  }
+
+  .panel-lead {
+    margin-top: 1rem;
+    font-size: 1.0625rem;
+    max-width: 36rem;
+  }
+
+  .spec-list { margin-top: 1.65rem; }
+
+  .spec-list li { padding: 1.22rem 0; }
 }
 
 @media (max-width: 980px) {
@@ -928,7 +992,12 @@ a.btn.is-copied {
   .copy,
   .nav-toggle { display: none !important; }
 
-  .shell { display: block; }
+  .shell,
+  #practice { display: block; }
+
+  .practice-stage { display: block; }
+
+  .instrument-head { margin-top: 1.5rem; }
 
   .js [data-tabs] [role="tabpanel"] { display: block !important; }
 

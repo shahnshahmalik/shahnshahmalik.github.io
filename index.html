@@ -81,7 +81,7 @@
 
     <main id="main">
       <div class="main-inner" id="top">
-        <section id="practice" aria-labelledby="practice-title">
+        <section id="practice" aria-labelledby="practice-title" data-tabs data-orientation="vertical">
           <div class="hero-copy" data-email-group>
             <p class="kicker">Front-end engineer · New Delhi, India</p>
             <h1 id="practice-title">Shahnshah</h1>
@@ -93,13 +93,7 @@
             <p class="email-note" data-email-status role="status" aria-live="polite"></p>
           </div>
 
-          <div class="instrument" data-tabs data-orientation="vertical">
-            <div class="instrument-head">
-              <p class="section-kicker"><span>01</span> Practice</p>
-              <p class="instrument-note">In the order that matters.</p>
-            </div>
-            <div class="instrument-body">
-              <div class="practice-list" role="tablist" aria-label="Skills" aria-orientation="vertical">
+          <div class="practice-list" role="tablist" aria-label="Skills" aria-orientation="vertical">
                 <button class="practice-tab" type="button" role="tab" id="tab-angular" aria-controls="panel-angular" aria-selected="true" tabindex="0">
                   <span class="idx">01</span>
                   <span class="label">Angular</span>
@@ -130,9 +124,14 @@
                   <span class="label">Also in production</span>
                   <span class="meta">React, server</span>
                 </button>
-              </div>
+          </div>
 
-              <div class="practice-panels">
+          <div class="practice-stage">
+            <div class="instrument-head">
+              <p class="section-kicker"><span>01</span> Practice</p>
+              <p class="instrument-note">In the order that matters.</p>
+            </div>
+            <div class="practice-panels">
                 <div class="panel is-active" role="tabpanel" id="panel-angular" aria-labelledby="tab-angular">
                   <p class="panel-idx">01 / 06</p>
                   <p class="panel-title">Angular</p>
@@ -211,7 +210,6 @@
                     <li><span>LoopBack</span><span>APIs</span></li>
                   </ul>
                 </div>
-              </div>
             </div>
           </div>
         </section>
