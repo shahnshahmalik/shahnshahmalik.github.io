@@ -1,226 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137235006-3"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-137235006-3');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <meta name="robots" content="index, follow">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="7 days">
-    <meta name="application-name" content="Shahnshah's Portfolio [Web Developer | Designer]" />
-
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Shahnshah's Portfolio [Web Developer | Designer]" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-touch-icon" content="/icon.png" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/icons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-
-
-    <meta name="title" content="Shahnshah's portfolio [Web Developer | Designer]">
-    <meta name="description" content="Shahnshah Malik - Freelance Web Designer & Developer based in New Delhi, India. Web Designer and developer">
-    <meta name="keywords" content="development, design, digital marketing, seo, website, shahnshah">
-    <meta name="author" content="Shahnshah">
-
-    <meta property="og:type" content="website" />
-    <meta property="og:image:type" content="image/jpg" />
-    <meta property="og:image:width" content="1000" />
-    <meta property="og:image:height" content="667" />
-    <meta property="og:site_name" content="Shahnshah Malik" />
-    <meta property="og:image" content="/main.png" />
-    <meta property="og:title" content="Shahnshah's portfolio [Web Developer | Designer]" />
-    <meta property="og:description" content="Shahnshah Malik - Freelance Web Designer & Developer based in New Delhi, India. Web Designer and developer" />
-    <meta property="og:url" content="https://shahnshahmalik.github.io" />
-
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="robots" content="all" />
-
-    <title>Shahnshah Malik</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shahnshah — Front-end engineer</title>
+  <meta name="description" content="Shahnshah is a front-end engineer in New Delhi. Eight years of Angular SaaS — from design files to production dashboards, floor plans, and AI interfaces. The standard is quality.">
+  <meta name="author" content="Shahnshah">
+  <meta name="theme-color" content="#f3f4f6">
+  <link rel="canonical" href="https://shahnshahmalik.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Shahnshah">
+  <meta property="og:title" content="Shahnshah — Front-end engineer">
+  <meta property="og:description" content="Eight years of Angular SaaS in New Delhi. Skills first. The standard is quality.">
+  <meta property="og:url" content="https://shahnshahmalik.github.io/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Shahnshah — Front-end engineer">
+  <meta name="twitter:description" content="Eight years of Angular SaaS in New Delhi. Skills first. The standard is quality.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <script>document.documentElement.classList.add("js");</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Shahnshah",
+    "jobTitle": "Front-end engineer",
+    "email": "mailto:shahenshah.malik@hotmail.com",
+    "telephone": "+91-888-267-0684",
+    "url": "https://shahnshahmalik.github.io/",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "New Delhi",
+      "addressCountry": "IN"
+    },
+    "sameAs": [
+      "https://github.com/shahnshahmalik",
+      "https://www.linkedin.com/in/shahnshahmalik/",
+      "https://www.upwork.com/freelancers/~012dfed8a66d5a977a"
+    ]
+  }
+  </script>
 </head>
 <body>
-    <div id="loading">
-        <div id="spinner"></div>
-    </div>
-    <div id="magnify">
-        <h1 onclick="closemagnify()"><i class="fas fa-times"></i></h1>
-        <div id="img_here"></div>
-    </div>
-    <header id="header" class="animated slideInDown" style="animation-delay:1.8s;">
-        <table>
-            <tr>
-                <td id="logo">Shahnshah Malik</td>
-                <td id="navigation">
-                    <a href="#work">work</a>
-                    <a href="#bio">about</a>
-                    <a href="https://medium.com/@luv200" target="_blank">blog</a>
-                    <a href="#contact">contact</a>
-                </td>
-            </tr>
-        </table>
-    </header>
-    <table id="top_part">
-        <tr>
-            <td id="about" class="animated slideInLeft" style="animation-delay:2s;">
-                <h2>Freelance Web Designer & Developer based in New Delhi, India</h2>
-                <p>Highly experienced in designing and developing responsive websites and web applications.</p>
-                <a href="#contact"><button class="btn_one">Contact Me</button></a><br>
-                <table>
-                    <tr>
-                        <td class="animated zoomIn" style="animation-delay:2.2s;"><a class="social" href="https://www.facebook.com/shahenshah.malik.98" title="Shahnshah on Facebook" target="_blank"><i class="fab fa-facebook"></i></a></td>
-                        <td class="animated zoomIn" style="animation-delay:2.4s;"><a class="social" href="https://twitter.com/shah3nshah" title="Shahnshah on Twitter" target="_blank"><i class="fab fa-twitter"></i></a></td>
-                        <td class="animated zoomIn" style="animation-delay:2.8s;"><a class="social" href="https://stackoverflow.com/users/5668376/shahnshah" target="_blank"><i class="fab fa-stack-overflow"></i></a></td>
-                        <td class="animated zoomIn" style="animation-delay:3.0s;"><a class="social" href="https://medium.com/@luv200" title="Shahnshah on Medium" target="_blank"><i class="fab fa-medium"></i></a></td>
-                    </tr>
-                </table>
-            </td>
-            <td id="rightImage" class="animated jackInTheBox" style="animation-delay:2.2s;"></td>
-        </tr>
-    </table>
-    <div id="work">
-        <h1>work</h1>
-        <div id="photos">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/em_i.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/em_m_1.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/em_m_2.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/fn_i.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/fn_m_1.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/fn_m_2.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/ta_m_1.png">
-            <img class="elevate-1" onclick="magnify($(this).attr('src'))" src="./projects/ta_m_2.png">
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="shell">
+    <header class="rail">
+      <div class="rail-bar">
+        <a class="brand" href="#top">Shahnshah</a>
+        <div class="rail-bar-actions">
+          <a class="btn btn-small" href="public/Shahnshah-Malik-Resume.docx" download>Resume</a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="rail-panel">
+            <span class="nav-toggle-label">Menu</span>
+          </button>
         </div>
-    </div>
-    <div id="bio">
-        <h1>about</h1>
-        <p>
-            Professionally connected with the web development industry and information technology for many years.<br>
-            Here are the Frameworks and Technologies I have experience with:
-            <ul>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://angular.io/">Angular</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://reactjs.org/">ReactJs</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://codeigniter.com/">CodeIgniter</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://laravel.com/">Laravel</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://expressjs.com/">ExpressJs</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://loopback.io/">Loopback</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://httpd.apache.org/">Apache</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://www.mysql.com/">MySQL</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://nodejs.org/en/">NodeJs</a>
-                </li>
-            </ul>
+      </div>
+      <div id="rail-panel" class="rail-panel">
+        <p class="rail-id">Front-end engineer<br>8+ years with Angular<br>Jamia Nagar, New Delhi</p>
+        <nav class="rail-nav" aria-label="Primary">
+          <a href="#practice" aria-current="true">Practice</a>
+          <a href="#journey">Journey</a>
+          <a href="#standard">Standard</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div class="rail-foot">
+          <a class="btn" href="public/Shahnshah-Malik-Resume.docx" download>Download resume</a>
+          <div class="rail-links">
+            <a href="mailto:shahenshah.malik@hotmail.com">Email</a>
+            <a href="https://github.com/shahnshahmalik" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a>
+            <a href="https://www.linkedin.com/in/shahnshahmalik/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
+            <a href="https://www.upwork.com/freelancers/~012dfed8a66d5a977a" target="_blank" rel="noopener noreferrer">Upwork<span class="visually-hidden"> (opens in a new tab)</span></a>
+          </div>
+        </div>
+      </div>
+    </header>
 
-            Tools I've used:
-            <ul>
+    <main id="main">
+      <div class="main-inner" id="top">
+        <section id="practice" aria-labelledby="practice-title">
+          <div class="hero-copy">
+            <p class="kicker">Front-end engineer · Angular SaaS</p>
+            <h1 id="practice-title">The standard<br>is quality.</h1>
+            <p class="lede">I am a front-end engineer in Jamia Nagar, New Delhi. For eight years I have built Angular products and turned Figma files, PSDs, screenshots, and designs into production apps.</p>
+            <div class="hero-actions">
+              <a class="btn" href="public/Shahnshah-Malik-Resume.docx" download>Download resume</a>
+              <a class="btn btn-ghost" href="mailto:shahenshah.malik@hotmail.com">Email</a>
+            </div>
+          </div>
 
-                <li>
-                    <a class="tech-link" target="_blank" href="https://www.atlassian.com/software/jira">Jira</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank" href="https://git-scm.com/">Git</a>
-                </li>
-                <li>
-                    <a class="tech-link" target="_blank"
-                        href="https://www.adobe.com/in/products/xd.html?promoid=PYPVQ3HN&mv=other">Adobe XD</a>
-                </li>
+          <div class="instrument" data-tabs data-orientation="vertical">
+            <div class="instrument-head">
+              <p class="section-kicker"><span>01</span> Practice</p>
+              <p class="instrument-note">In the order that matters.</p>
+            </div>
+            <div class="instrument-body">
+              <div class="practice-list" role="tablist" aria-label="Skills" aria-orientation="vertical">
+                <button class="practice-tab" type="button" role="tab" id="tab-angular" aria-controls="panel-angular" aria-selected="true" tabindex="0">
+                  <span class="idx">01</span>
+                  <span class="label">Angular</span>
+                  <span class="meta">v2–v20</span>
+                </button>
+                <button class="practice-tab" type="button" role="tab" id="tab-design" aria-controls="panel-design" aria-selected="false" tabindex="-1">
+                  <span class="idx">02</span>
+                  <span class="label">Design to production</span>
+                  <span class="meta">Figma, PSD</span>
+                </button>
+                <button class="practice-tab" type="button" role="tab" id="tab-data" aria-controls="panel-data" aria-selected="false" tabindex="-1">
+                  <span class="idx">03</span>
+                  <span class="label">Data on screen</span>
+                  <span class="meta">Dashboards</span>
+                </button>
+                <button class="practice-tab" type="button" role="tab" id="tab-ai" aria-controls="panel-ai" aria-selected="false" tabindex="-1">
+                  <span class="idx">04</span>
+                  <span class="label">AI front-end</span>
+                  <span class="meta">Chat, local</span>
+                </button>
+                <button class="practice-tab" type="button" role="tab" id="tab-tests" aria-controls="panel-tests" aria-selected="false" tabindex="-1">
+                  <span class="idx">05</span>
+                  <span class="label">Tests</span>
+                  <span class="meta">Unit and e2e</span>
+                </button>
+                <button class="practice-tab" type="button" role="tab" id="tab-also" aria-controls="panel-also" aria-selected="false" tabindex="-1">
+                  <span class="idx">06</span>
+                  <span class="label">Also in production</span>
+                  <span class="meta">React, server</span>
+                </button>
+              </div>
+
+              <div class="practice-panels">
+                <div class="panel is-active" role="tabpanel" id="panel-angular" aria-labelledby="tab-angular">
+                  <p class="panel-idx">01 / 06</p>
+                  <p class="panel-title">Angular</p>
+                  <p class="panel-lead">The through-line. Every product from Estater to InnerSpace is an Angular app. Appcarry moved from 12 to 17 inside that range.</p>
+                  <ul class="spec-list">
+                    <li><span>Angular</span><span>v2–v20</span></li>
+                    <li><span>TypeScript</span><span>Language of the work</span></li>
+                    <li><span>RxJS</span><span>Streams, live updates</span></li>
+                    <li><span>Signals</span><span>Current Angular</span></li>
+                    <li><span>Standalone components</span><span>Current Angular</span></li>
+                    <li><span>Angular Material</span><span>Components</span></li>
+                    <li><span>SASS</span><span>Styling system</span></li>
+                  </ul>
+                </div>
+                <div class="panel" role="tabpanel" id="panel-design" aria-labelledby="tab-design">
+                  <p class="panel-idx">02 / 06</p>
+                  <p class="panel-title">Design to production</p>
+                  <p class="panel-lead">The file format is not the point. I build the Angular app the picture was asking for — structure, states, and behavior.</p>
+                  <ul class="spec-list">
+                    <li><span>Figma</span><span>To a production app</span></li>
+                    <li><span>PSD</span><span>To a production app</span></li>
+                    <li><span>Screenshots</span><span>To a production app</span></li>
+                    <li><span>Other designs</span><span>To a production app</span></li>
+                    <li><span>Storybook</span><span>Component work</span></li>
+                    <li><span>Design systems</span><span>Theming</span></li>
+                    <li><span>Tailwind</span><span>When the system uses it</span></li>
+                  </ul>
+                </div>
+                <div class="panel" role="tabpanel" id="panel-data" aria-labelledby="tab-data">
+                  <p class="panel-idx">03 / 06</p>
+                  <p class="panel-title">Data on screen</p>
+                  <p class="panel-lead">Dashboards and spatial tools for people who operate the data. Role-based views, charts, filters, and forms that stay clear when the dataset is large.</p>
+                  <ul class="spec-list">
+                    <li><span>FabricJS</span><span>Floor plans you can draw on</span></li>
+                    <li><span>GoodData</span><span>Role-based dashboards</span></li>
+                    <li><span>D3.js</span><span>Charts</span></li>
+                    <li><span>Chart.js</span><span>Charts</span></li>
+                    <li><span>Highcharts</span><span>Charts</span></li>
+                    <li><span>REST</span><span>APIs</span></li>
+                    <li><span>GraphQL</span><span>APIs</span></li>
+                    <li><span>WebSockets</span><span>Live data</span></li>
+                  </ul>
+                </div>
+                <div class="panel" role="tabpanel" id="panel-ai" aria-labelledby="tab-ai">
+                  <p class="panel-idx">04 / 06</p>
+                  <p class="panel-title">AI front-end</p>
+                  <p class="panel-lead">AI shows up as interface, not as a demo. Chat, completion, and recommendations — including models running locally. Some of this landed in the Appcarry years.</p>
+                  <ul class="spec-list">
+                    <li><span>Chat interfaces</span><span>Product UI</span></li>
+                    <li><span>OpenAI-style APIs</span><span>Integration</span></li>
+                    <li><span>Ollama</span><span>Local models</span></li>
+                    <li><span>Recommendations</span><span>Product UI</span></li>
+                    <li><span>Text completion</span><span>Product UI</span></li>
+                  </ul>
+                </div>
+                <div class="panel" role="tabpanel" id="panel-tests" aria-labelledby="tab-tests">
+                  <p class="panel-idx">05 / 06</p>
+                  <p class="panel-title">Tests</p>
+                  <p class="panel-lead">A floor under the next change. At Appcarry, unit tests and performance work were the base new features landed on.</p>
+                  <ul class="spec-list">
+                    <li><span>Jasmine</span><span>Unit</span></li>
+                    <li><span>Karma</span><span>Unit</span></li>
+                    <li><span>Jest</span><span>Unit</span></li>
+                    <li><span>Cypress</span><span>End to end</span></li>
+                  </ul>
+                </div>
+                <div class="panel" role="tabpanel" id="panel-also" aria-labelledby="tab-also">
+                  <p class="panel-idx">06 / 06</p>
+                  <p class="panel-title">Also in production</p>
+                  <p class="panel-lead">Used when the product called for them. The center of the practice is still the Angular front-end.</p>
+                  <ul class="spec-list">
+                    <li><span>React</span><span>When the product is React</span></li>
+                    <li><span>Laravel</span><span>Server</span></li>
+                    <li><span>CodeIgniter</span><span>Server</span></li>
+                    <li><span>Express.js</span><span>Server</span></li>
+                    <li><span>LoopBack</span><span>APIs</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="journey" aria-labelledby="journey-title">
+          <p class="section-kicker"><span>02</span> Journey</p>
+          <h2 id="journey-title">From the first product to the current one.</h2>
+          <p class="section-lede">Four products. The rows are the story. The bars are the calendar — Appcarry starts in the last month of Estater and runs beside Prospecta, then InnerSpace. Choose a chapter to read it.<span class="pointer-hint"> Move across the years to see what overlapped.</span></p>
+
+          <div class="register" data-register style="--span: 104">
+            <div class="scale" aria-hidden="true">
+              <span style="--at: 0">2018</span>
+              <span class="scale-minor" style="--at: 23">2020</span>
+              <span style="--at: 47">2022</span>
+              <span class="scale-minor" style="--at: 71">2024</span>
+              <span class="scale-year-now" style="--at: 95">2026</span>
+              <span class="scale-now" style="--at: 104">Now</span>
+            </div>
+            <div class="journey" data-tabs data-orientation="horizontal">
+              <div class="lanes-wrap" data-track>
+                <div class="scrub" data-scrub hidden>
+                  <span class="scrub-label" data-scrub-label></span>
+                </div>
+                <div class="lanes" role="tablist" aria-label="Work chapters, 2018 to now">
+                <button class="lane" type="button" role="tab" id="tab-estater" aria-controls="panel-estater" aria-selected="true" tabindex="0" style="--s: 0; --e: 27">
+                  <span class="lane-name"><span>Estater</span><small>Where it started</small></span>
+                  <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
+                  <span class="lane-dates">2018–20</span>
+                </button>
+                <button class="lane" type="button" role="tab" id="tab-prospecta" aria-controls="panel-prospecta" aria-selected="false" tabindex="-1" style="--s: 32; --e: 55">
+                  <span class="lane-name"><span>Prospecta</span><small>Enterprise data</small></span>
+                  <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
+                  <span class="lane-dates">2020–22</span>
+                </button>
+                <button class="lane" type="button" role="tab" id="tab-appcarry" aria-controls="panel-appcarry" aria-selected="false" tabindex="-1" style="--s: 27; --e: 80">
+                  <span class="lane-name"><span>Appcarry</span><small>Dashboards, alongside</small></span>
+                  <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
+                  <span class="lane-dates">2020–24</span>
+                </button>
+                <button class="lane" type="button" role="tab" id="tab-innerspace" aria-controls="panel-innerspace" aria-selected="false" tabindex="-1" style="--s: 55; --e: 104">
+                  <span class="lane-name"><span>InnerSpace</span><small>The current work</small></span>
+                  <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
+                  <span class="lane-dates">2022–now</span>
+                </button>
+                </div>
+              </div>
+
+              <div class="sheets">
+                <article class="sheet is-active" role="tabpanel" id="panel-estater" aria-labelledby="tab-estater">
+                  <header class="sheet-head">
+                    <p class="sheet-kicker">Feb 2018 – May 2020</p>
+                    <h3>Estater</h3>
+                    <p class="sheet-role">Senior front-end developer · Full-time · India</p>
+                  </header>
+                  <p class="sheet-lead">Property-analysis tools for Kuwait and Bahrain.</p>
+                  <p>I built customer-facing tools for catchment analysis, price trends, and property benchmarking. Survey work was still living in documents and spreadsheets. I digitized those workflows, including CSV upload from legacy files, so field data landed in the product.</p>
+                  <p class="sheet-meaning">Where it started. Analysis tools someone else would use to make a decision.</p>
+                </article>
+                <article class="sheet" role="tabpanel" id="panel-prospecta" aria-labelledby="tab-prospecta">
+                  <header class="sheet-head">
+                    <p class="sheet-kicker">Oct 2020 – Sep 2022</p>
+                    <h3>Prospecta Software</h3>
+                    <p class="sheet-role">Senior front-end developer · Full-time · India</p>
+                  </header>
+                  <p class="sheet-lead">Data-governance screens on a platform fed by SAP.</p>
+                  <p>I improved the UI across a suite of data integration, quality, and governance products handling large incoming datasets. The screens had to stay responsive and follow the way operators actually move through a 360° view of the data.</p>
+                  <p class="sheet-meaning">Where it widened. Enterprise scale, and interfaces for people who live in the data all day. Appcarry continued part-time beside this role.</p>
+                </article>
+                <article class="sheet" role="tabpanel" id="panel-appcarry" aria-labelledby="tab-appcarry">
+                  <header class="sheet-head">
+                    <p class="sheet-kicker">May 2020 – Oct 2024</p>
+                    <h3>Appcarry</h3>
+                    <p class="sheet-role">Front-end engineer · Part-time · India</p>
+                  </header>
+                  <p class="sheet-lead">Ad-tracking dashboards. Angular 12 to 17, and AI interface work along the way.</p>
+                  <p>I built analytics dashboards and charted reports for impressions, events, conversions, and installs — filterable reports, dynamic forms, and a split into modules so the app stayed maintainable. Unit tests and performance work gave new features a stable base. From 2020 to 2022 this ran beside full-time work.</p>
+                  <p class="sheet-meaning">The long thread of dashboard craft. It starts as Estater ends, runs through Prospecta, and continues into the InnerSpace years.</p>
+                </article>
+                <article class="sheet" role="tabpanel" id="panel-innerspace" aria-labelledby="tab-innerspace">
+                  <header class="sheet-head">
+                    <p class="sheet-kicker">Sep 2022 – present</p>
+                    <h3>InnerSpace</h3>
+                    <p class="sheet-role">Front-end engineer · Freelance · Canada</p>
+                  </header>
+                  <p class="sheet-lead">Occupancy analytics SaaS for enterprise office space.</p>
+                  <p>I built an interactive floor-plan tool: upload a plan, then draw, edit, and style zones on the image with FabricJS. I shipped a role-based occupancy dashboard on GoodData so each customer type only sees their own data. Lazy loading, Angular services, and RxJS for live updates cut dashboard load time by about 40%.</p>
+                  <p class="note">Described at the level an NDA allows — outcomes and approach, not product screens or internal detail.</p>
+                  <p class="sheet-meaning">The current practice. Spatial UI, role-based analytics, and speed I can account for.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="standard" aria-labelledby="standard-title">
+          <p class="section-kicker"><span>03</span> Standard</p>
+          <h2 id="standard-title">What I do best, and what I love.</h2>
+          <p class="section-lede">The skills above are the range. This is the part I am willing to be hired for, and the part I want to keep doing.</p>
+
+          <div class="best">
+            <article>
+              <p class="num">01</p>
+              <div>
+                <h3>From a picture of the product to the product.</h3>
+                <p>Figma, PSD, screenshot, or a looser design. I build the Angular application — components, states, and real data — until it behaves like the thing that was drawn.</p>
+              </div>
+            </article>
+            <article>
+              <p class="num">02</p>
+              <div>
+                <h3>Screens for people who operate the data.</h3>
+                <p>Role-based dashboards, charts, filters, dynamic forms, and floor plans. Prospecta’s governance suite, Appcarry’s tracking reports, InnerSpace’s occupancy views. Large datasets, still legible.</p>
+              </div>
+            </article>
+            <article>
+              <p class="num">03</p>
+              <div>
+                <h3>Speed you can account for.</h3>
+                <p class="metric"><strong>~40%</strong> <span>shorter dashboard load at InnerSpace, from lazy loading and tighter data fetching — not a rewrite for its own sake.</span></p>
+                <p>Jasmine, Karma, Jest, and Cypress are how the next change keeps that floor.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="loves">
+            <h3 class="loves-heading">What I love</h3>
+            <article>
+              <h4>Drawing on a plan</h4>
+              <p>A floor plan stops being a picture once you can add a zone, edit it, and style it. That kind of direct manipulation is the work I like most.</p>
+            </article>
+            <article>
+              <h4>AI as part of the interface</h4>
+              <p>Chat, text completion, recommendations. OpenAI-style APIs, and local models through Ollama when the product should run close to the user. The UI still has to be finished.</p>
+            </article>
+            <article>
+              <h4>The last ten percent</h4>
+              <p>Focus order, spacing, empty and error states, motion that shows what changed. Quality is mostly this, done on purpose.</p>
+            </article>
+          </div>
+          <p class="closing">Quality is the goal. I would rather a screen be finished than merely present.</p>
+        </section>
+
+        <section id="contact" aria-labelledby="contact-title">
+          <p class="section-kicker"><span>04</span> Contact</p>
+          <h2 id="contact-title">If the work fits, write.</h2>
+          <div class="contact-grid">
+            <div class="contact-primary">
+              <a class="email" href="mailto:shahenshah.malik@hotmail.com">shahenshah.malik@hotmail.com</a>
+              <button class="copy" type="button" data-copy="shahenshah.malik@hotmail.com">Copy address</button>
+              <p class="copy-status" role="status" aria-live="polite"></p>
+              <p class="phone"><a href="tel:+918882670684">+91 888 267 0684</a></p>
+            </div>
+            <ul class="contact-links">
+              <li><a href="https://github.com/shahnshahmalik" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.linkedin.com/in/shahnshahmalik/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.upwork.com/freelancers/~012dfed8a66d5a977a" target="_blank" rel="noopener noreferrer">Upwork<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+              <li><a href="public/Shahnshah-Malik-Resume.docx" download>Resume</a></li>
             </ul>
-            </p>
-    </div>
-    <div id="contact">
-        <h1>contact</h1>
-            <table>
-                <tr>
-                    <td>
-                        <div id="inner_div">
-                            <table id="inner_table">
-                                <tr>
-                                    <td><i class="fas fa-phone"></i> &nbsp; +91 888 267 0684</td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fas fa-at"></i> &nbsp; shahnshahmalik@protonmail.com</td>
-                                </tr>
-                                 <!-- <tr>
-                                    <td><i class="fas fa-fax"></i> &nbsp; +1 234 567 8910</td>
-                                </tr> -->
-                                <tr>
-                                    <td><i class="fas fa-map-marker-alt"></i>
-                                    <div id="address">
-                                        Okhla,<br>
-                                        New Delhi,<br>
-                                        India
-                                    </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a class="social" href="https://www.facebook.com/shahenshah.malik.98" title="Shahnshah on Facebook" target="_blank"><i class="fab fa-facebook"></i></a>
-                                        <a class="social" href="https://twitter.com/shah3nshah" title="Shahnshah on Twitter" target="_blank"><i class="fab fa-twitter"></i></a>
-                                        <a class="social" href="https://stackoverflow.com/users/5668376/shahnshah" target="_blank"><i class="fab fa-stack-overflow"></i></a>
-                                        <a class="social" href="https://medium.com/@luv200" title="Shahnshah on Medium" target="_blank"><i class="fab fa-medium"></i></a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </td>
-                    <td>
-                        <!-- <form id="contact-form" method="post">
-                            <input type="text" placeholder="name" id="Name" required/>
-                            <input type="email" placeholder="email" id="Email" required/><br>
-                            <textarea placeholder="your message" required rows="5" id="message"></textarea><br>
-                            <button class="btn_one">send</button>
-                        </form>  -->
-                    </td>
-                </tr>
-            </table>
-    </div>
-    <div id="footer">
-         <br> <a href="https://shahnshahmalik.github.io">Shahnshah Malik</a>
-    </div>
-    <script src="index.js" type="text/javascript"></script>
+          </div>
+          <footer class="colophon">
+            <p>Jamia Nagar, New Delhi, India</p>
+            <p>BCA, Jamia Hamdard University, 2012</p>
+            <p>© 2026 Shahnshah</p>
+          </footer>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script src="index.js"></script>
 </body>
 </html>
