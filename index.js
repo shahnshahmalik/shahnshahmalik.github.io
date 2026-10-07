@@ -178,23 +178,83 @@
   spy();
   window.addEventListener("scroll", spy, { passive: true });
 
-  var copyButton = document.querySelector("[data-copy]");
-  var copyStatus = document.querySelector(".copy-status");
-  if (copyButton && copyStatus) {
-    copyButton.addEventListener("click", function () {
-      var value = copyButton.getAttribute("data-copy");
-      function done(ok) {
-        copyStatus.textContent = ok ? "Email copied." : "Copy failed — the address is selected.";
-        copyButton.textContent = ok ? "Copied" : "Copy address";
-        window.setTimeout(function () {
-          copyButton.textContent = "Copy address";
-        }, 1800);
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(value).then(function () { done(true); }, function () { done(false); });
-      } else {
-        done(false);
-      }
-    });
+  var ADDRESS = "shahenshah.malik@hotmail.com";
+
+  function copyWithCommand(value) {
+    var active = document.activeElement;
+    var area = document.createElement("textarea");
+    area.value = value;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "0";
+    area.style.left = "0";
+    area.style.width = "1px";
+    area.style.height = "1px";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+    area.setSelectionRange(0, value.length);
+    var ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch (err) {
+      ok = false;
+    }
+    document.body.removeChild(area);
+    if (active && active !== area && typeof active.focus === "function") active.focus();
+    return ok;
   }
+
+  function selectVisibleAddress(group) {
+    var node = (group && group.querySelector(".email")) || document.querySelector(".email");
+    if (!node) return;
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  function showEmailResult(group, trigger, ok) {
+    var note = group && group.querySelector("[data-email-status]");
+    if (note) {
+      note.textContent = ok
+        ? "Copied " + ADDRESS
+        : "Could not copy automatically. The address is selected — press ⌘C.";
+    }
+    if (!ok) selectVisibleAddress(group);
+    if (!trigger) return;
+    trigger.classList.toggle("is-copied", ok);
+    if (trigger.hasAttribute("data-copy")) {
+      trigger.textContent = ok ? "Copied" : "Copy address";
+    } else if (!trigger.classList.contains("email")) {
+      if (!trigger.dataset.label) trigger.dataset.label = "Email";
+      trigger.textContent = ok ? "Copied" : trigger.dataset.label;
+    }
+    window.clearTimeout(trigger._emailTimer);
+    if (trigger.hasAttribute("data-copy")) return;
+    trigger._emailTimer = window.setTimeout(function () {
+      trigger.classList.remove("is-copied");
+      if (trigger.dataset.label && !trigger.classList.contains("email")) trigger.textContent = trigger.dataset.label;
+    }, 6000);
+  }
+
+  document.querySelectorAll("[data-email], [data-copy]").forEach(function (control) {
+    control.addEventListener("click", function () {
+      var value = control.getAttribute("data-email") || control.getAttribute("data-copy");
+      var group = control.closest("[data-email-group]");
+      var legacyOk = copyWithCommand(value);
+      if (legacyOk) showEmailResult(group, control, true);
+      if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(function () {
+          showEmailResult(group, control, true);
+        }, function () {
+          if (!legacyOk) showEmailResult(group, control, false);
+        });
+        return;
+      }
+      if (!legacyOk) showEmailResult(group, control, false);
+    });
+  });
 })();
