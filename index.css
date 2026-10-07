@@ -245,15 +245,6 @@ h1 {
   max-width: 12ch;
 }
 
-.hero-line {
-  margin-top: 0.75rem;
-  max-width: 14ch;
-  font-size: clamp(1.45rem, 2.2vw, 2.05rem);
-  font-weight: 520;
-  letter-spacing: -0.034em;
-  line-height: 1.15;
-}
-
 .lede,
 .section-lede {
   margin-top: 1.15rem;
@@ -674,15 +665,6 @@ section { scroll-margin-top: 4.5rem; }
   margin-top: 0.45rem;
   color: var(--muted);
   font-size: 0.98rem;
-}
-
-.closing {
-  margin-top: 2.75rem;
-  max-width: 22rem;
-  font-size: clamp(1.45rem, 2vw, 1.8rem);
-  font-weight: 520;
-  letter-spacing: -0.03em;
-  line-height: 1.25;
 }
 
 .contact-grid {
