@@ -1,6 +1,10 @@
 (function () {
   "use strict";
 
+  var root = document.documentElement;
+  var reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var wideQuery = window.matchMedia("(min-width: 1040px)");
+  var fineQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
   var SPAN = 104;
   var CHAPTERS = [
     { name: "Estater", start: 0, end: 27 },
@@ -9,176 +13,482 @@
     { name: "Upwork", start: 55, end: 104 }
   ];
   var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var ADDRESS = "shahenshah.malik@hotmail.com";
+  var SKILL_HOLD = 0.06;
+
+  var lenis = null;
+  var ticker = null;
+  var journeyDistance = 0;
+  var chapterOffsets = [];
+  var progressBar = document.querySelector("[data-progress]");
+  var thesis = document.getElementById("thesis");
+  var thesisCopy = document.querySelector("[data-thesis]");
+  var practice = document.getElementById("practice");
+  var journey = document.getElementById("journey");
+  var skillLinks = Array.prototype.slice.call(document.querySelectorAll(".practice-index a"));
+  var skillArticles = Array.prototype.slice.call(document.querySelectorAll(".skill-article"));
+  var skillNow = document.querySelector("[data-skill-now]");
+  var lanes = Array.prototype.slice.call(document.querySelectorAll(".lane"));
+  var chapters = Array.prototype.slice.call(document.querySelectorAll(".chapter"));
+  var chapterTrack = document.querySelector("[data-chapter-track]");
+  var chapterWindow = document.querySelector("[data-chapter-window]");
+  var nav = document.getElementById("nav");
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav-links a"));
+  var sections = ["practice", "journey", "craft", "contact"].map(function (id) {
+    return document.getElementById(id);
+  });
+
+  function wantsMotion() {
+    return !reduceQuery.matches && wideQuery.matches && fineQuery.matches && window.gsap && window.ScrollTrigger && window.Lenis;
+  }
 
   function dateFromIndex(index) {
     var abs = 2018 * 12 + 1 + index;
     return { year: Math.floor(abs / 12), month: abs % 12 };
   }
 
-  function bindTabs(root) {
-    var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
-    var vertical = root.getAttribute("data-orientation") === "vertical";
-    if (!tabs.length) return;
-
-    function activate(tab, focus) {
-      tabs.forEach(function (item) {
-        var on = item === tab;
-        item.setAttribute("aria-selected", on ? "true" : "false");
-        item.tabIndex = on ? 0 : -1;
-        var panel = document.getElementById(item.getAttribute("aria-controls"));
-        if (!panel) return;
-        panel.classList.toggle("is-active", on);
-        panel.hidden = !on;
-      });
-      if (focus) tab.focus();
-    }
-
-    tabs.forEach(function (tab, index) {
-      tab.addEventListener("click", function () {
-        activate(tab, false);
-      });
-      tab.addEventListener("keydown", function (event) {
-        var key = event.key;
-        var next = null;
-        if (vertical && (key === "ArrowDown" || key === "ArrowUp")) {
-          next = key === "ArrowDown" ? tabs[(index + 1) % tabs.length] : tabs[(index - 1 + tabs.length) % tabs.length];
-        }
-        if (!vertical && (key === "ArrowRight" || key === "ArrowLeft")) {
-          next = key === "ArrowRight" ? tabs[(index + 1) % tabs.length] : tabs[(index - 1 + tabs.length) % tabs.length];
-        }
-        if (key === "Home") next = tabs[0];
-        if (key === "End") next = tabs[tabs.length - 1];
-        if (!next) return;
-        event.preventDefault();
-        activate(next, true);
-      });
-    });
-
-    var current = tabs.find(function (tab) {
-      return tab.getAttribute("aria-selected") === "true";
-    }) || tabs[0];
-    activate(current, false);
+  function sectionRange(section) {
+    var top = section.getBoundingClientRect().top + window.scrollY;
+    var travel = Math.max(1, section.offsetHeight - window.innerHeight);
+    return { top: top, travel: travel };
   }
 
-  document.querySelectorAll("[data-tabs]").forEach(bindTabs);
+  function scrollToY(y) {
+    if (lenis) lenis.scrollTo(y, { force: true, lock: true, duration: 1.05 });
+    else window.scrollTo({ top: y, behavior: reduceQuery.matches ? "auto" : "smooth" });
+  }
 
-  var register = document.querySelector("[data-register]");
-  var trackHost = register && register.querySelector("[data-track]");
-  var scrub = register && register.querySelector("[data-scrub]");
-  var scrubLabel = register && register.querySelector("[data-scrub-label]");
-  function placeScrub(event) {
-    if (!trackHost || !scrub) return;
-    if (event.pointerType === "touch") return;
-    var track = trackHost.querySelector(".lane-track");
-    if (!track) return;
-    var trackRect = track.getBoundingClientRect();
-    var hostRect = trackHost.getBoundingClientRect();
-    if (event.clientX < trackRect.left || event.clientX > trackRect.right) {
-      scrub.hidden = true;
-      register.classList.remove("is-scrubbing");
+  function scrollToProgress(section, progress) {
+    var range = sectionRange(section);
+    scrollToY(range.top + range.travel * Math.min(1, Math.max(0, progress)));
+  }
+
+  function setCurrent(nodes, index, attr) {
+    nodes.forEach(function (node, i) {
+      if (i === index) node.setAttribute(attr, "true");
+      else node.removeAttribute(attr);
+    });
+  }
+
+  function paintThesis(progress) {
+    if (!thesisCopy) return;
+    var words = thesisCopy.querySelectorAll(".word");
+    if (!words.length) return;
+    var revealUntil = 1 - SKILL_HOLD - 0.12;
+    var f = Math.min(1, progress / revealUntil);
+    var exact = f * words.length;
+    var current = f >= 1 ? words.length : Math.floor(exact);
+    words.forEach(function (word, i) {
+      word.classList.toggle("is-on", i < current);
+      word.classList.toggle("is-now", i === current && f < 1);
+    });
+  }
+
+  function splitThesis() {
+    if (!thesisCopy || thesisCopy.dataset.split === "true") return;
+    var text = thesisCopy.textContent.replace(/\s+/g, " ").trim();
+    thesisCopy.textContent = "";
+    text.split(" ").forEach(function (part, index) {
+      if (index) thesisCopy.appendChild(document.createTextNode(" "));
+      var word = document.createElement("span");
+      word.className = "word";
+      word.textContent = part;
+      thesisCopy.appendChild(word);
+    });
+    thesisCopy.dataset.split = "true";
+  }
+
+  function paintSkill(progress) {
+    var span = 1 - SKILL_HOLD;
+    var scaled = Math.min(span, progress) / span;
+    var exact = scaled * skillArticles.length;
+    var index = Math.min(skillArticles.length - 1, Math.floor(exact));
+    var local = Math.min(1, Math.max(0, exact - index));
+    skillArticles.forEach(function (article, i) {
+      article.classList.toggle("is-active", i === index);
+    });
+    skillLinks.forEach(function (link, i) {
+      if (i === index) {
+        link.setAttribute("aria-current", "true");
+        link.style.setProperty("--p", local.toFixed(3));
+      } else {
+        link.removeAttribute("aria-current");
+        link.style.removeProperty("--p");
+      }
+    });
+    if (skillNow) skillNow.textContent = String(index + 1).padStart(2, "0");
+  }
+
+  function layoutJourney() {
+    if (!journey || !chapterTrack || !chapterWindow) return;
+    chapterTrack.style.transform = "none";
+    var distance = Math.max(0, chapterTrack.scrollWidth - chapterWindow.clientWidth);
+    journeyDistance = distance;
+    chapterOffsets = chapters.map(function (chapter) { return chapter.offsetLeft; });
+    journey.style.height = (window.innerHeight + distance * 1.4) + "px";
+    syncOverflow(chapters.concat(skillArticles));
+  }
+
+  function syncOverflow(nodes) {
+    nodes.forEach(function (node) {
+      if (node.scrollHeight > node.clientHeight + 8) node.setAttribute("data-lenis-prevent", "");
+      else node.removeAttribute("data-lenis-prevent");
+    });
+  }
+
+  function paintJourney(progress) {
+    if (!chapterTrack) return;
+    var span = 1 - 0.08;
+    var scaled = Math.min(span, progress) / span;
+    var tx = -scaled * journeyDistance;
+    chapterTrack.style.transform = "translate3d(" + tx.toFixed(2) + "px,0,0)";
+    var windowRect = chapterWindow.getBoundingClientRect();
+    var focus = windowRect.left + Math.max(200, Math.min(280, windowRect.width * 0.22));
+    var index = 0;
+    var best = Infinity;
+    var contained = false;
+    chapters.forEach(function (chapter, i) {
+      var rect = chapter.getBoundingClientRect();
+      if (rect.left <= focus && rect.right >= focus) {
+        index = i;
+        contained = true;
+      }
+      if (contained) return;
+      var dist = Math.abs(rect.left - focus);
+      if (dist < best) {
+        best = dist;
+        index = i;
+      }
+    });
+    chapters.forEach(function (chapter, i) {
+      chapter.classList.toggle("is-active", i === index);
+    });
+    setCurrent(lanes, index, "aria-current");
+  }
+
+  function paintProgress() {
+    if (!progressBar) return;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var value = max > 0 ? window.scrollY / max : 0;
+    progressBar.style.transform = "scaleX(" + Math.min(1, Math.max(0, value)) + ")";
+  }
+
+  function spy() {
+    var mark = window.scrollY + window.innerHeight * 0.35;
+    var current = sections[0];
+    sections.forEach(function (section) {
+      if (!section) return;
+      var top = section.getBoundingClientRect().top + window.scrollY;
+      if (top <= mark) current = section;
+    });
+    navLinks.forEach(function (link) {
+      var on = current && link.getAttribute("href") === "#" + current.id;
+      if (on) link.setAttribute("aria-current", "true");
+      else link.removeAttribute("aria-current");
+    });
+    if (nav) nav.classList.toggle("is-paper", !!(current && current.id === "journey"));
+    if (!root.classList.contains("motion")) {
+      var skillMark = window.scrollY + window.innerHeight * 0.45;
+      var skillIndex = 0;
+      skillArticles.forEach(function (article, i) {
+        var top = article.getBoundingClientRect().top + window.scrollY;
+        if (top <= skillMark) skillIndex = i;
+      });
+      setCurrent(skillLinks, skillIndex, "aria-current");
+      var chapterMark = skillMark;
+      var chapterIndex = 0;
+      chapters.forEach(function (chapter, i) {
+        var top = chapter.getBoundingClientRect().top + window.scrollY;
+        if (top <= chapterMark) chapterIndex = i;
+      });
+      setCurrent(lanes, chapterIndex, "aria-current");
+    }
+  }
+
+  function destroyMotion() {
+    if (window.ScrollTrigger) window.ScrollTrigger.getAll().forEach(function (trigger) { trigger.kill(); });
+    if (ticker && window.gsap) window.gsap.ticker.remove(ticker);
+    ticker = null;
+    if (lenis) {
+      lenis.destroy();
+      lenis = null;
+    }
+    if (chapterTrack) chapterTrack.style.transform = "";
+    if (journey) journey.style.height = "";
+    root.classList.remove("armed");
+  }
+
+  function setupMotion() {
+    window.gsap.registerPlugin(window.ScrollTrigger);
+    root.classList.add("motion");
+    root.classList.remove("soft");
+    splitThesis();
+    layoutJourney();
+
+    lenis = new window.Lenis({
+      autoRaf: false,
+      lerp: 0.1,
+      smoothWheel: true,
+      syncTouch: false,
+      wheelMultiplier: 0.92
+    });
+    lenis.on("scroll", function () {
+      window.ScrollTrigger.update();
+      paintProgress();
+      spy();
+    });
+    ticker = function (time) { lenis.raf(time * 1000); };
+    window.gsap.ticker.add(ticker);
+    window.gsap.ticker.lagSmoothing(0);
+
+    window.ScrollTrigger.create({
+      trigger: thesis,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: function (self) { paintThesis(self.progress); }
+    });
+    window.ScrollTrigger.create({
+      trigger: practice,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: function (self) { paintSkill(self.progress); }
+    });
+    window.ScrollTrigger.create({
+      trigger: journey,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: function (self) { paintJourney(self.progress); }
+    });
+
+    window.gsap.to(".hero-parallax", {
+      y: -80,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#top",
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    root.classList.add("armed");
+    paintThesis(0);
+    paintSkill(0);
+    paintJourney(0);
+    window.ScrollTrigger.refresh();
+    bindLifts();
+    bindCursor();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        layoutJourney();
+        window.ScrollTrigger.refresh();
+      });
+    }
+  }
+
+  function bindLifts() {
+    if (!("IntersectionObserver" in window)) {
+      document.querySelectorAll(".lift").forEach(function (node) { node.classList.add("is-in"); });
       return;
     }
-    var ratio = (event.clientX - trackRect.left) / trackRect.width;
-    ratio = Math.min(1, Math.max(0, ratio));
-    var month = Math.round(ratio * SPAN);
-    var when = dateFromIndex(month);
-    var active = CHAPTERS.filter(function (chapter) {
-      return month >= chapter.start && month <= chapter.end;
-    }).map(function (chapter) {
-      return chapter.name;
-    });
-    var x = trackRect.left - hostRect.left + ratio * trackRect.width;
-    scrub.style.setProperty("--x", x + "px");
-    scrubLabel.textContent = MONTHS[when.month] + " " + when.year + " · " + (active.join(" · ") || "—");
-    scrub.classList.toggle("is-left", ratio < 0.18);
-    scrub.classList.toggle("is-right", ratio > 0.72);
-    scrub.hidden = false;
-    register.classList.add("is-scrubbing");
-  }
-
-  if (trackHost) {
-    trackHost.addEventListener("pointermove", placeScrub);
-    trackHost.addEventListener("pointerleave", function () {
-      scrub.hidden = true;
-      register.classList.remove("is-scrubbing");
-    });
-  }
-
-  var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var lanes = document.querySelector(".lanes");
-  if (lanes && !motion.matches && "IntersectionObserver" in window) {
-    lanes.classList.add("will-draw");
+    var lifts = document.querySelectorAll(".lift");
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        lanes.classList.add("is-in");
+        entry.target.classList.add("is-in");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.35 });
+    lifts.forEach(function (node) { observer.observe(node); });
+  }
+
+  function bindSoft() {
+    if (!root.classList.contains("soft") || !("IntersectionObserver" in window)) {
+      document.querySelectorAll(".reveal").forEach(function (node) { node.classList.add("is-in"); });
+      return;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-in");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+    document.querySelectorAll(".reveal").forEach(function (node) { observer.observe(node); });
+  }
+
+  function bindCursor() {
+    var ring = document.querySelector(".cursor");
+    if (!ring || !fineQuery.matches || reduceQuery.matches) return;
+    var x = window.innerWidth / 2;
+    var y = window.innerHeight / 2;
+    var cx = x;
+    var cy = y;
+    var hot = false;
+    var running = true;
+    window.addEventListener("pointermove", function (event) {
+      x = event.clientX;
+      y = event.clientY;
+      var target = event.target.closest("a, button");
+      hot = !!target;
+    }, { passive: true });
+    document.addEventListener("pointerleave", function () { hot = false; });
+    function loop() {
+      if (!running) return;
+      cx += (x - cx) * 0.18;
+      cy += (y - cy) * 0.18;
+      var scale = hot ? 1.65 : 1;
+      ring.style.transform = "translate3d(" + cx.toFixed(2) + "px," + cy.toFixed(2) + "px,0) scale(" + scale + ")";
+      window.requestAnimationFrame(loop);
+    }
+    loop();
+    document.querySelectorAll(".btn, .email").forEach(function (node) {
+      node.addEventListener("pointermove", function (event) {
+        var rect = node.getBoundingClientRect();
+        var dx = (event.clientX - rect.left - rect.width / 2) * 0.28;
+        var dy = (event.clientY - rect.top - rect.height / 2) * 0.4;
+        node.style.transform = "translate3d(" + dx.toFixed(2) + "px," + dy.toFixed(2) + "px,0)";
+      });
+      node.addEventListener("pointerleave", function () {
+        node.style.transform = "";
+      });
+    });
+  }
+
+  function bindBars() {
+    var laneRoot = document.querySelector(".lanes");
+    if (!laneRoot || reduceQuery.matches || !("IntersectionObserver" in window)) return;
+    laneRoot.classList.add("will-draw");
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        laneRoot.classList.add("is-in");
         observer.disconnect();
       });
     }, { threshold: 0.35 });
-    observer.observe(lanes);
+    observer.observe(laneRoot);
   }
 
-  var toggle = document.querySelector(".nav-toggle");
-  var rail = document.querySelector(".rail");
-  var panel = document.getElementById("rail-panel");
-  var desktop = window.matchMedia("(min-width: 981px)");
+  function bindScrub() {
+    var register = document.querySelector("[data-register]");
+    var trackHost = register && register.querySelector("[data-track]");
+    var scrub = register && register.querySelector("[data-scrub]");
+    var scrubLabel = register && register.querySelector("[data-scrub-label]");
+    if (!trackHost || !scrub || !fineQuery.matches) return;
 
-  function closeNav(returnFocus) {
-    if (!rail || !toggle) return;
-    rail.classList.remove("is-open");
-    toggle.setAttribute("aria-expanded", "false");
-    document.body.classList.remove("nav-open");
-    if (returnFocus) toggle.focus();
+    function placeScrub(event) {
+      if (event.pointerType === "touch") return;
+      var track = trackHost.querySelector(".lane-track");
+      if (!track) return;
+      var trackRect = track.getBoundingClientRect();
+      var hostRect = trackHost.getBoundingClientRect();
+      if (event.clientX < trackRect.left || event.clientX > trackRect.right) {
+        scrub.hidden = true;
+        return;
+      }
+      var ratio = (event.clientX - trackRect.left) / trackRect.width;
+      ratio = Math.min(1, Math.max(0, ratio));
+      var month = Math.round(ratio * SPAN);
+      var when = dateFromIndex(month);
+      var active = CHAPTERS.filter(function (chapter) {
+        return month >= chapter.start && month <= chapter.end;
+      }).map(function (chapter) { return chapter.name; });
+      var x = trackRect.left - hostRect.left + ratio * trackRect.width;
+      scrub.style.setProperty("--x", x + "px");
+      scrubLabel.textContent = MONTHS[when.month] + " " + when.year + " · " + (active.join(" · ") || "—");
+      scrub.classList.toggle("is-left", ratio < 0.18);
+      scrub.classList.toggle("is-right", ratio > 0.72);
+      scrub.hidden = false;
+    }
+
+    trackHost.addEventListener("pointermove", placeScrub);
+    trackHost.addEventListener("pointerleave", function () { scrub.hidden = true; });
   }
 
-  function openNav() {
-    rail.classList.add("is-open");
-    toggle.setAttribute("aria-expanded", "true");
-    document.body.classList.add("nav-open");
-    var first = panel.querySelector("a");
-    if (first) first.focus();
-  }
+  function bindNav() {
+    var toggle = document.querySelector(".nav-toggle");
+    var panel = document.getElementById("nav-panel");
+    if (!toggle || !nav || !panel) return;
 
-  if (toggle && rail && panel) {
+    function closeNav(returnFocus) {
+      nav.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("nav-open");
+      if (returnFocus) toggle.focus();
+    }
+
+    function openNav() {
+      nav.classList.add("is-open");
+      toggle.setAttribute("aria-expanded", "true");
+      document.body.classList.add("nav-open");
+      var first = panel.querySelector("a");
+      if (first) first.focus();
+    }
+
     toggle.addEventListener("click", function () {
-      if (rail.classList.contains("is-open")) closeNav(false);
+      if (nav.classList.contains("is-open")) closeNav(false);
       else openNav();
     });
     panel.addEventListener("click", function (event) {
       if (event.target.closest("a")) closeNav(false);
     });
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && rail.classList.contains("is-open")) closeNav(true);
+      if (event.key === "Escape" && nav.classList.contains("is-open")) closeNav(true);
     });
-    desktop.addEventListener("change", function () {
-      if (desktop.matches) closeNav(false);
-    });
-  }
-
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".rail-nav a"));
-  var sections = navLinks.map(function (link) {
-    return document.querySelector(link.getAttribute("href"));
-  }).filter(Boolean);
-
-  function spy() {
-    if (!sections.length) return;
-    var mark = window.scrollY + 140;
-    var current = sections[0];
-    sections.forEach(function (section) {
-      var top = section.getBoundingClientRect().top + window.scrollY;
-      if (top <= mark) current = section;
-    });
-    navLinks.forEach(function (link) {
-      var on = link.getAttribute("href") === "#" + current.id;
-      if (on) link.setAttribute("aria-current", "true");
-      else link.removeAttribute("aria-current");
+    wideQuery.addEventListener("change", function () {
+      if (wideQuery.matches) closeNav(false);
     });
   }
 
-  spy();
-  window.addEventListener("scroll", spy, { passive: true });
+  function bindAnchorKeys() {
+    var index = document.querySelector(".practice-index");
+    if (!index) return;
+    index.addEventListener("keydown", function (event) {
+      var links = skillLinks;
+      var current = links.indexOf(document.activeElement);
+      if (current < 0) return;
+      var next = null;
+      if (event.key === "ArrowDown" || event.key === "ArrowRight") next = links[(current + 1) % links.length];
+      if (event.key === "ArrowUp" || event.key === "ArrowLeft") next = links[(current - 1 + links.length) % links.length];
+      if (event.key === "Home") next = links[0];
+      if (event.key === "End") next = links[links.length - 1];
+      if (!next) return;
+      event.preventDefault();
+      next.focus();
+    });
+  }
 
-  var ADDRESS = "shahenshah.malik@hotmail.com";
+  function bindClicks() {
+    document.addEventListener("click", function (event) {
+      var link = event.target.closest("a[href^='#']");
+      if (!link) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      var id = link.getAttribute("href").slice(1);
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (!root.classList.contains("motion")) return;
+      event.preventDefault();
+      if (link.closest(".practice-index") && link.hasAttribute("data-index")) {
+        var skillCount = skillArticles.length || 1;
+        scrollToProgress(practice, (Number(link.getAttribute("data-index")) + 0.04) / skillCount);
+        return;
+      }
+      if (link.classList.contains("lane")) {
+        var offset = chapterOffsets[Number(link.getAttribute("data-index"))] || 0;
+        var origin = chapterOffsets[0] || 0;
+        var scaled = journeyDistance ? (offset - origin) / journeyDistance : 0;
+        scrollToProgress(journey, Math.min(1, Math.max(0, scaled * (1 - 0.08))));
+        var heading = el.querySelector("h3");
+        if (heading) {
+          heading.setAttribute("tabindex", "-1");
+          heading.focus({ preventScroll: true });
+        }
+        return;
+      }
+      if (lenis) lenis.scrollTo(el, { offset: 0, force: true, lock: true, duration: 1.05 });
+      else el.scrollIntoView();
+    });
+  }
 
   function copyWithCommand(value) {
     var active = document.activeElement;
@@ -196,11 +506,7 @@
     area.select();
     area.setSelectionRange(0, value.length);
     var ok = false;
-    try {
-      ok = document.execCommand("copy");
-    } catch (err) {
-      ok = false;
-    }
+    try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
     document.body.removeChild(area);
     if (active && active !== area && typeof active.focus === "function") active.focus();
     return ok;
@@ -226,10 +532,9 @@
     if (!ok) selectVisibleAddress(group);
     if (!trigger) return;
     trigger.classList.toggle("is-copied", ok);
-    if (trigger.hasAttribute("data-copy")) {
-      trigger.textContent = ok ? "Copied" : "Copy address";
-    } else if (!trigger.classList.contains("email")) {
-      if (!trigger.dataset.label) trigger.dataset.label = "Email";
+    if (trigger.hasAttribute("data-copy")) trigger.textContent = ok ? "Copied" : "Copy address";
+    else if (!trigger.classList.contains("email")) {
+      if (!trigger.dataset.label) trigger.dataset.label = trigger.textContent;
       trigger.textContent = ok ? "Copied" : trigger.dataset.label;
     }
     window.clearTimeout(trigger._emailTimer);
@@ -240,21 +545,65 @@
     }, 6000);
   }
 
-  document.querySelectorAll("[data-email], [data-copy]").forEach(function (control) {
-    control.addEventListener("click", function () {
-      var value = control.getAttribute("data-email") || control.getAttribute("data-copy");
-      var group = control.closest("[data-email-group]");
-      var legacyOk = copyWithCommand(value);
-      if (legacyOk) showEmailResult(group, control, true);
-      if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(value).then(function () {
-          showEmailResult(group, control, true);
-        }, function () {
-          if (!legacyOk) showEmailResult(group, control, false);
-        });
-        return;
-      }
-      if (!legacyOk) showEmailResult(group, control, false);
+  function bindEmail() {
+    document.querySelectorAll("[data-email], [data-copy]").forEach(function (control) {
+      control.addEventListener("click", function () {
+        var value = control.getAttribute("data-email") || control.getAttribute("data-copy");
+        var group = control.closest("[data-email-group]");
+        var legacyOk = copyWithCommand(value);
+        if (legacyOk) showEmailResult(group, control, true);
+        if (navigator.clipboard && window.isSecureContext && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(value).then(function () {
+            showEmailResult(group, control, true);
+          }, function () {
+            if (!legacyOk) showEmailResult(group, control, false);
+          });
+          return;
+        }
+        if (!legacyOk) showEmailResult(group, control, false);
+      });
     });
-  });
+  }
+
+  function onScroll() {
+    paintProgress();
+    spy();
+  }
+
+  function boot() {
+    bindNav();
+    bindAnchorKeys();
+    bindClicks();
+    bindEmail();
+    bindScrub();
+    bindBars();
+    if (wantsMotion()) setupMotion();
+    else {
+      root.classList.remove("motion");
+      if (!reduceQuery.matches) root.classList.add("soft");
+      destroyMotion();
+      bindSoft();
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    var resizeTimer = 0;
+    window.addEventListener("resize", function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        var has = root.classList.contains("motion");
+        var want = wantsMotion();
+        if (has !== want) {
+          window.location.reload();
+          return;
+        }
+        if (has) {
+          layoutJourney();
+          window.ScrollTrigger.refresh();
+        }
+      }, 160);
+    });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
 })();
