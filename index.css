@@ -883,15 +883,6 @@ a.btn.is-copied,
   color: var(--night);
 }
 
-.phone { margin-top: 0.9rem; }
-
-.phone a {
-  text-decoration: none;
-  border-bottom: 1px solid var(--line-strong);
-}
-
-.phone a:hover { color: var(--signal); border-bottom-color: var(--signal); }
-
 .contact-links {
   display: flex;
   flex-direction: column;
@@ -1169,9 +1160,23 @@ a.btn.is-copied,
     overflow: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     box-sizing: border-box;
   }
+
+  /* Center the chapter when it fits. When it does not, auto margins
+     collapse so the date stays at the top instead of sliding under the timeline. */
+  .motion .chapter > * { flex-shrink: 0; }
+
+  .motion .chapter::before,
+  .motion .chapter::after {
+    content: "";
+    flex: 0 0 0;
+  }
+
+  .motion .chapter::before { margin-top: auto; }
+
+  .motion .chapter::after { margin-bottom: auto; }
 
   .motion .chapter h3 {
     font-size: clamp(3rem, 5.6vw, 5.4rem);
