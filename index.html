@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Shahnshah — Front-end engineer</title>
   <meta name="description" content="Shahnshah is a front-end engineer in New Delhi. Eight years of Angular SaaS — from design files to production dashboards, floor plans, and AI interfaces.">
   <meta name="author" content="Shahnshah">
-  <meta name="theme-color" content="#f3f4f6">
+  <meta name="theme-color" content="#0c0f0d">
+  <meta name="color-scheme" content="dark">
   <link rel="canonical" href="https://shahnshahmalik.github.io/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Shahnshah">
@@ -20,9 +21,20 @@
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.css">
   <link rel="stylesheet" href="index.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add("js");
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var wide = window.matchMedia("(min-width: 1040px)").matches;
+      var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      if (!reduce && wide && fine) root.classList.add("motion");
+      else if (!reduce) root.classList.add("soft");
+    })();
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,334 +59,370 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <div class="shell">
-    <header class="rail">
-      <div class="rail-bar">
-        <a class="brand" href="#top">Shahnshah</a>
-        <div class="rail-bar-actions">
-          <a class="btn btn-small" href="public/Shahnshah-Malik-Resume.docx" download>Resume</a>
-          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="rail-panel">
-            <span class="nav-toggle-label">Menu</span>
-          </button>
-        </div>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="progress" aria-hidden="true"><span data-progress></span></div>
+    <a class="brand" href="#top">Shahnshah</a>
+    <nav class="nav-links" id="nav-panel" aria-label="Primary">
+      <a href="#practice">Practice</a>
+      <a href="#journey">Journey</a>
+      <a href="#craft">Craft</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-nav" href="public/Shahnshah-Malik-Resume.docx" download>Resume</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">
+        <span class="nav-toggle-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Menu</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-parallax">
+        <p class="kicker hero-rise">Front-end engineer · 8+ years · New Delhi, India</p>
+        <h1 id="hero-title" class="hero-rise" data-fit>Shahnshah</h1>
+        <p class="hero-discipline hero-rise" data-fit>Angular</p>
       </div>
-      <div id="rail-panel" class="rail-panel">
-        <p class="rail-id">Front-end engineer<br>8+ years with Angular<br>New Delhi, India</p>
-        <nav class="rail-nav" aria-label="Primary">
-          <a href="#practice" aria-current="true">Practice</a>
-          <a href="#journey">Journey</a>
-          <a href="#standard">Standard</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <div class="rail-foot" data-email-group>
-          <a class="btn" href="public/Shahnshah-Malik-Resume.docx" download>Download resume</a>
-          <div class="rail-links">
-            <a href="mailto:shahenshah.malik@hotmail.com" data-email="shahenshah.malik@hotmail.com">Email</a>
-            <a href="https://github.com/shahnshahmalik" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a>
-            <a href="https://www.linkedin.com/in/shahnshahmalik/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a>
-            <a href="https://www.upwork.com/freelancers/~012dfed8a66d5a977a" target="_blank" rel="noopener noreferrer">Upwork<span class="visually-hidden"> (opens in a new tab)</span></a>
+      <div class="hero-bottom">
+        <div class="hero-lede-wrap hero-rise" data-email-group>
+          <p class="lede">Eight years of Angular SaaS. I take a Figma file, a PSD, a screenshot, or a design and ship the production app.</p>
+          <div class="hero-actions">
+            <a class="btn" href="public/Shahnshah-Malik-Resume.docx" download>Download resume</a>
+            <a class="btn btn-ghost" href="mailto:shahenshah.malik@hotmail.com" data-email="shahenshah.malik@hotmail.com">Email</a>
           </div>
           <p class="email-note" data-email-status role="status" aria-live="polite"></p>
         </div>
+        <a class="scroll-cue hero-rise" href="#thesis">
+          <span>Scroll</span>
+          <i aria-hidden="true"></i>
+        </a>
       </div>
-    </header>
+    </section>
 
-    <main id="main">
-      <div class="main-inner" id="top">
-        <section id="practice" aria-labelledby="practice-title" data-tabs data-orientation="vertical">
-          <div class="hero-copy" data-email-group>
-            <p class="kicker">Front-end engineer · New Delhi, India</p>
-            <h1 id="practice-title">Shahnshah</h1>
-            <p class="lede">Eight years of Angular SaaS. I take a Figma file, a PSD, a screenshot, or a design and ship the production app.</p>
-            <div class="hero-actions">
-              <a class="btn" href="public/Shahnshah-Malik-Resume.docx" download>Download resume</a>
-              <a class="btn btn-ghost" href="mailto:shahenshah.malik@hotmail.com" data-email="shahenshah.malik@hotmail.com">Email</a>
-            </div>
-            <p class="email-note" data-email-status role="status" aria-live="polite"></p>
-          </div>
-
-          <div class="practice-list" role="tablist" aria-label="Skills" aria-orientation="vertical">
-                <button class="practice-tab" type="button" role="tab" id="tab-angular" aria-controls="panel-angular" aria-selected="true" tabindex="0">
-                  <span class="idx">01</span>
-                  <span class="label">Angular</span>
-                  <span class="meta">v2–v20</span>
-                </button>
-                <button class="practice-tab" type="button" role="tab" id="tab-design" aria-controls="panel-design" aria-selected="false" tabindex="-1">
-                  <span class="idx">02</span>
-                  <span class="label">Design to production</span>
-                  <span class="meta">Figma, PSD</span>
-                </button>
-                <button class="practice-tab" type="button" role="tab" id="tab-data" aria-controls="panel-data" aria-selected="false" tabindex="-1">
-                  <span class="idx">03</span>
-                  <span class="label">Data on screen</span>
-                  <span class="meta">Dashboards</span>
-                </button>
-                <button class="practice-tab" type="button" role="tab" id="tab-ai" aria-controls="panel-ai" aria-selected="false" tabindex="-1">
-                  <span class="idx">04</span>
-                  <span class="label">AI front-end</span>
-                  <span class="meta">Chat, local</span>
-                </button>
-                <button class="practice-tab" type="button" role="tab" id="tab-tests" aria-controls="panel-tests" aria-selected="false" tabindex="-1">
-                  <span class="idx">05</span>
-                  <span class="label">Tests</span>
-                  <span class="meta">Unit and e2e</span>
-                </button>
-                <button class="practice-tab" type="button" role="tab" id="tab-also" aria-controls="panel-also" aria-selected="false" tabindex="-1">
-                  <span class="idx">06</span>
-                  <span class="label">Also in production</span>
-                  <span class="meta">React, server</span>
-                </button>
-          </div>
-
-          <div class="practice-stage">
-            <div class="instrument-head">
-              <p class="section-kicker"><span>01</span> Practice</p>
-              <p class="instrument-note">In the order that matters.</p>
-            </div>
-            <div class="practice-panels">
-                <div class="panel is-active" role="tabpanel" id="panel-angular" aria-labelledby="tab-angular">
-                  <p class="panel-idx">01 / 06</p>
-                  <p class="panel-title">Angular</p>
-                  <p class="panel-lead">The through-line. Every product from Estater through the Upwork contracts is an Angular app. Appcarry moved from 12 to 17 inside that range.</p>
-                  <ul class="spec-list">
-                    <li><span>Angular</span><span>v2–v20</span></li>
-                    <li><span>TypeScript</span><span>Language of the work</span></li>
-                    <li><span>RxJS</span><span>Streams, live updates</span></li>
-                    <li><span>Signals</span><span>Current Angular</span></li>
-                    <li><span>Standalone components</span><span>Current Angular</span></li>
-                    <li><span>Angular Material</span><span>Components</span></li>
-                    <li><span>SASS</span><span>Styling system</span></li>
-                  </ul>
-                </div>
-                <div class="panel" role="tabpanel" id="panel-design" aria-labelledby="tab-design">
-                  <p class="panel-idx">02 / 06</p>
-                  <p class="panel-title">Design to production</p>
-                  <p class="panel-lead">The file format is not the point. I build the Angular app the picture was asking for — structure, states, and behavior.</p>
-                  <ul class="spec-list">
-                    <li><span>Figma</span><span>To a production app</span></li>
-                    <li><span>PSD</span><span>To a production app</span></li>
-                    <li><span>Screenshots</span><span>To a production app</span></li>
-                    <li><span>Other designs</span><span>To a production app</span></li>
-                    <li><span>Storybook</span><span>Component work</span></li>
-                    <li><span>Design systems</span><span>Theming</span></li>
-                    <li><span>Tailwind</span><span>When the system uses it</span></li>
-                  </ul>
-                </div>
-                <div class="panel" role="tabpanel" id="panel-data" aria-labelledby="tab-data">
-                  <p class="panel-idx">03 / 06</p>
-                  <p class="panel-title">Data on screen</p>
-                  <p class="panel-lead">Dashboards and spatial tools for people who operate the data. Role-based views, charts, filters, and forms that stay clear when the dataset is large.</p>
-                  <ul class="spec-list">
-                    <li><span>FabricJS</span><span>Floor plans you can draw on</span></li>
-                    <li><span>GoodData</span><span>Role-based dashboards</span></li>
-                    <li><span>D3.js</span><span>Charts</span></li>
-                    <li><span>Chart.js</span><span>Charts</span></li>
-                    <li><span>Highcharts</span><span>Charts</span></li>
-                    <li><span>REST</span><span>APIs</span></li>
-                    <li><span>GraphQL</span><span>APIs</span></li>
-                    <li><span>WebSockets</span><span>Live data</span></li>
-                  </ul>
-                </div>
-                <div class="panel" role="tabpanel" id="panel-ai" aria-labelledby="tab-ai">
-                  <p class="panel-idx">04 / 06</p>
-                  <p class="panel-title">AI front-end</p>
-                  <p class="panel-lead">AI shows up as interface, not as a demo. Chat, completion, and recommendations — including models running locally. Some of this landed in the Appcarry years.</p>
-                  <ul class="spec-list">
-                    <li><span>Chat interfaces</span><span>Product UI</span></li>
-                    <li><span>OpenAI-style APIs</span><span>Integration</span></li>
-                    <li><span>Ollama</span><span>Local models</span></li>
-                    <li><span>Recommendations</span><span>Product UI</span></li>
-                    <li><span>Text completion</span><span>Product UI</span></li>
-                  </ul>
-                </div>
-                <div class="panel" role="tabpanel" id="panel-tests" aria-labelledby="tab-tests">
-                  <p class="panel-idx">05 / 06</p>
-                  <p class="panel-title">Tests</p>
-                  <p class="panel-lead">A floor under the next change. At Appcarry, unit tests and performance work were the base new features landed on.</p>
-                  <ul class="spec-list">
-                    <li><span>Jasmine</span><span>Unit</span></li>
-                    <li><span>Karma</span><span>Unit</span></li>
-                    <li><span>Jest</span><span>Unit</span></li>
-                    <li><span>Cypress</span><span>End to end</span></li>
-                  </ul>
-                </div>
-                <div class="panel" role="tabpanel" id="panel-also" aria-labelledby="tab-also">
-                  <p class="panel-idx">06 / 06</p>
-                  <p class="panel-title">Also in production</p>
-                  <p class="panel-lead">Used when the product called for them. The center of the practice is still the Angular front-end.</p>
-                  <ul class="spec-list">
-                    <li><span>React</span><span>When the product is React</span></li>
-                    <li><span>Laravel</span><span>Server</span></li>
-                    <li><span>CodeIgniter</span><span>Server</span></li>
-                    <li><span>Express.js</span><span>Server</span></li>
-                    <li><span>LoopBack</span><span>APIs</span></li>
-                  </ul>
-                </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="journey" aria-labelledby="journey-title">
-          <p class="section-kicker"><span>02</span> Journey</p>
-          <h2 id="journey-title">From the first product to the current contract.</h2>
-          <p class="section-lede">Four chapters. The rows are the story. The bars are the calendar — Appcarry starts in the last month of Estater and runs beside Prospecta, then Upwork. Choose a chapter to read it.<span class="pointer-hint"> Move across the years to see what overlapped.</span></p>
-
-          <div class="register" data-register style="--span: 104">
-            <div class="scale" aria-hidden="true">
-              <span style="--at: 0">2018</span>
-              <span class="scale-minor" style="--at: 23">2020</span>
-              <span style="--at: 47">2022</span>
-              <span class="scale-minor" style="--at: 71">2024</span>
-              <span class="scale-year-now" style="--at: 95">2026</span>
-              <span class="scale-now" style="--at: 104">Now</span>
-            </div>
-            <div class="journey" data-tabs data-orientation="horizontal">
-              <div class="lanes-wrap" data-track>
-                <div class="scrub" data-scrub hidden>
-                  <span class="scrub-label" data-scrub-label></span>
-                </div>
-                <div class="lanes" role="tablist" aria-label="Work chapters, 2018 to now">
-                <button class="lane" type="button" role="tab" id="tab-estater" aria-controls="panel-estater" aria-selected="true" tabindex="0" style="--s: 0; --e: 27">
-                  <span class="lane-name"><span>Estater</span><small>Where it started</small></span>
-                  <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
-                  <span class="lane-dates">2018–20</span>
-                </button>
-                <button class="lane" type="button" role="tab" id="tab-prospecta" aria-controls="panel-prospecta" aria-selected="false" tabindex="-1" style="--s: 32; --e: 55">
-                  <span class="lane-name"><span>Prospecta</span><small>Enterprise data</small></span>
-                  <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
-                  <span class="lane-dates">2020–22</span>
-                </button>
-                <button class="lane" type="button" role="tab" id="tab-appcarry" aria-controls="panel-appcarry" aria-selected="false" tabindex="-1" style="--s: 27; --e: 80">
-                  <span class="lane-name"><span>Appcarry</span><small>Dashboards, alongside</small></span>
-                  <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
-                  <span class="lane-dates">2020–24</span>
-                </button>
-                <button class="lane" type="button" role="tab" id="tab-upwork" aria-controls="panel-upwork" aria-selected="false" tabindex="-1" style="--s: 55; --e: 104">
-                  <span class="lane-name"><span>Upwork</span><small>Freelance, individual</small></span>
-                  <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
-                  <span class="lane-dates">2022–now</span>
-                </button>
-                </div>
-              </div>
-
-              <div class="sheets">
-                <article class="sheet is-active" role="tabpanel" id="panel-estater" aria-labelledby="tab-estater">
-                  <header class="sheet-head">
-                    <p class="sheet-kicker">Feb 2018 – May 2020</p>
-                    <h3>Estater</h3>
-                    <p class="sheet-role">Senior front-end developer · Full-time · India</p>
-                  </header>
-                  <p class="sheet-lead">Property-analysis tools for Kuwait and Bahrain.</p>
-                  <p>I built customer-facing tools for catchment analysis, price trends, and property benchmarking. Survey work was still living in documents and spreadsheets. I digitized those workflows, including CSV upload from legacy files, so field data landed in the product.</p>
-                  <p class="sheet-meaning">Where it started. Analysis tools someone else would use to make a decision.</p>
-                </article>
-                <article class="sheet" role="tabpanel" id="panel-prospecta" aria-labelledby="tab-prospecta">
-                  <header class="sheet-head">
-                    <p class="sheet-kicker">Oct 2020 – Sep 2022</p>
-                    <h3>Prospecta Software</h3>
-                    <p class="sheet-role">Senior front-end developer · Full-time · India</p>
-                  </header>
-                  <p class="sheet-lead">Data-governance screens on a platform fed by SAP.</p>
-                  <p>I improved the UI across a suite of data integration, quality, and governance products handling large incoming datasets. The screens had to stay responsive and follow the way operators actually move through a 360° view of the data.</p>
-                  <p class="sheet-meaning">Where it widened. Enterprise scale, and interfaces for people who live in the data all day. Appcarry continued part-time beside this role.</p>
-                </article>
-                <article class="sheet" role="tabpanel" id="panel-appcarry" aria-labelledby="tab-appcarry">
-                  <header class="sheet-head">
-                    <p class="sheet-kicker">May 2020 – Oct 2024</p>
-                    <h3>Appcarry</h3>
-                    <p class="sheet-role">Front-end engineer · Part-time · India</p>
-                  </header>
-                  <p class="sheet-lead">Ad-tracking dashboards. Angular 12 to 17, and AI interface work along the way.</p>
-                  <p>I built analytics dashboards and charted reports for impressions, events, conversions, and installs — filterable reports, dynamic forms, and a split into modules so the app stayed maintainable. Unit tests and performance work gave new features a stable base. From 2020 to 2022 this ran beside full-time work.</p>
-                  <p class="sheet-meaning">The long thread of dashboard craft. It starts as Estater ends, runs through Prospecta, and continues into the Upwork years.</p>
-                </article>
-                <article class="sheet" role="tabpanel" id="panel-upwork" aria-labelledby="tab-upwork">
-                  <header class="sheet-head">
-                    <p class="sheet-kicker">Sep 2022 – present</p>
-                    <h3>Upwork</h3>
-                    <p class="sheet-role">Front-end engineer · Freelance · Individual</p>
-                  </header>
-                  <p class="sheet-lead">Long-term Angular SaaS, contracted directly.</p>
-                  <p>I bid as an individual, not through a firm. The contracts are long-running front-end work on Angular SaaS products. The client preference on record has been the United States and Canada.</p>
-                  <p class="sheet-meaning">The current chapter. Freelance, on contract, after the employed years.</p>
-                </article>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="standard" aria-labelledby="standard-title">
-          <p class="section-kicker"><span>03</span> Standard</p>
-          <h2 id="standard-title">What I do best, and what I love.</h2>
-          <p class="section-lede">The skills above are the range. This is the part I am willing to be hired for, and the part I want to keep doing.</p>
-
-          <div class="best">
-            <article>
-              <p class="num">01</p>
-              <div>
-                <h3>From a picture of the product to the product.</h3>
-                <p>Figma, PSD, screenshot, or a looser design. I build the Angular application — components, states, and real data — until it behaves like the thing that was drawn.</p>
-              </div>
-            </article>
-            <article>
-              <p class="num">02</p>
-              <div>
-                <h3>Screens for people who operate the data.</h3>
-                <p>Role-based dashboards, charts, filters, dynamic forms, and floor plans. Prospecta’s governance suite and Appcarry’s tracking reports. Large datasets, still legible.</p>
-              </div>
-            </article>
-            <article>
-              <p class="num">03</p>
-              <div>
-                <h3>Speed you can account for.</h3>
-                <p>Lazy loading and tighter data fetching, with a test floor under the next change. Jasmine, Karma, Jest, and Cypress cover that work.</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="loves">
-            <h3 class="loves-heading">What I love</h3>
-            <article>
-              <h4>Drawing on a plan</h4>
-              <p>A floor plan stops being a picture once you can add a zone, edit it, and style it. That kind of direct manipulation is the work I like most.</p>
-            </article>
-            <article>
-              <h4>AI as part of the interface</h4>
-              <p>Chat, text completion, recommendations. OpenAI-style APIs, and local models through Ollama when the product should run close to the user. The UI still has to be finished.</p>
-            </article>
-            <article>
-              <h4>The last ten percent</h4>
-              <p>Focus order, spacing, empty and error states, motion that shows what changed.</p>
-            </article>
-          </div>
-          </section>
-
-        <section id="contact" aria-labelledby="contact-title">
-          <p class="section-kicker"><span>04</span> Contact</p>
-          <h2 id="contact-title">If the work fits, write.</h2>
-          <div class="contact-grid">
-            <div class="contact-primary" data-email-group>
-              <a class="email" href="mailto:shahenshah.malik@hotmail.com" data-email="shahenshah.malik@hotmail.com">shahenshah.malik@hotmail.com</a>
-              <button class="copy" type="button" data-copy="shahenshah.malik@hotmail.com">Copy address</button>
-              <p class="email-note" data-email-status role="status" aria-live="polite"></p>
-              <p class="phone"><a href="tel:+918882670684">+91 888 267 0684</a></p>
-            </div>
-            <ul class="contact-links">
-              <li><a href="https://github.com/shahnshahmalik" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a></li>
-              <li><a href="https://www.linkedin.com/in/shahnshahmalik/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a></li>
-              <li><a href="https://www.upwork.com/freelancers/~012dfed8a66d5a977a" target="_blank" rel="noopener noreferrer">Upwork<span class="visually-hidden"> (opens in a new tab)</span></a></li>
-              <li><a href="public/Shahnshah-Malik-Resume.docx" download>Resume</a></li>
-            </ul>
-          </div>
-          <footer class="colophon">
-            <p>New Delhi, India</p>
-            <p>BCA, Jamia Hamdard University, 2012</p>
-            <p>© 2026 Shahnshah</p>
-          </footer>
-        </section>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-group">
+          <span>8+ years</span>
+          <span>Angular v2–v20</span>
+          <span>TypeScript</span>
+          <span>RxJS</span>
+          <span>Signals</span>
+          <span>Figma, PSD, screenshots</span>
+          <span>Dashboards</span>
+          <span>Floor plans</span>
+          <span>AI interfaces</span>
+          <span>Ollama</span>
+          <span>Jasmine · Karma · Jest</span>
+          <span>Cypress</span>
+          <span>Individual contractor</span>
+          <span>New Delhi, India</span>
+        </div>
+        <div class="marquee-group">
+          <span>8+ years</span>
+          <span>Angular v2–v20</span>
+          <span>TypeScript</span>
+          <span>RxJS</span>
+          <span>Signals</span>
+          <span>Figma, PSD, screenshots</span>
+          <span>Dashboards</span>
+          <span>Floor plans</span>
+          <span>AI interfaces</span>
+          <span>Ollama</span>
+          <span>Jasmine · Karma · Jest</span>
+          <span>Cypress</span>
+          <span>Individual contractor</span>
+          <span>New Delhi, India</span>
+        </div>
       </div>
-    </main>
-  </div>
-  <script src="index.js"></script>
+    </div>
+
+    <section id="thesis" aria-labelledby="thesis-title">
+      <div class="thesis-sticky">
+        <h2 id="thesis-title">The work</h2>
+        <p class="thesis-copy" data-thesis>Eight years of Angular SaaS. I take a Figma file, a PSD, a screenshot, or a design and ship the production app. Structure, states, and behavior — for people who operate the data.</p>
+      </div>
+    </section>
+
+    <section id="practice" aria-labelledby="practice-title">
+      <div class="practice-sticky">
+        <div class="practice-head">
+          <h2 id="practice-title"><span>01</span> Practice</h2>
+          <p class="practice-count" aria-hidden="true"><span data-skill-now>01</span> / 06</p>
+        </div>
+        <p class="section-lede">The range I am willing to be hired for, in the order that matters.</p>
+        <div class="practice-layout">
+          <nav class="practice-index" aria-label="Skills">
+            <a href="#skill-angular" data-index="0" aria-current="true"><span class="idx">01</span><span class="label">Angular</span></a>
+            <a href="#skill-design" data-index="1"><span class="idx">02</span><span class="label">Design to production</span></a>
+            <a href="#skill-data" data-index="2"><span class="idx">03</span><span class="label">Data on screen</span></a>
+            <a href="#skill-ai" data-index="3"><span class="idx">04</span><span class="label">AI front-end</span></a>
+            <a href="#skill-tests" data-index="4"><span class="idx">05</span><span class="label">Tests</span></a>
+            <a href="#skill-also" data-index="5"><span class="idx">06</span><span class="label">Also in production</span></a>
+          </nav>
+          <div class="practice-panels">
+            <article id="skill-angular" class="skill-article reveal is-active" data-index="0" aria-labelledby="skill-angular-title">
+              <p class="skill-watermark" aria-hidden="true">01</p>
+              <div class="skill-copy">
+                <p class="skill-idx">01 / 06</p>
+                <h3 id="skill-angular-title">Angular</h3>
+                <p class="skill-lead">The through-line. Every product from Estater through the Upwork contracts is an Angular app. Appcarry moved from 12 to 17 inside that range.</p>
+              </div>
+              <dl class="specs">
+                <div><dt>Angular</dt><dd>v2–v20</dd></div>
+                <div><dt>TypeScript</dt><dd>Language of the work</dd></div>
+                <div><dt>RxJS</dt><dd>Streams, live updates</dd></div>
+                <div><dt>Signals</dt><dd>Current Angular</dd></div>
+                <div><dt>Standalone components</dt><dd>Current Angular</dd></div>
+                <div><dt>Angular Material</dt><dd>Components</dd></div>
+                <div><dt>SASS</dt><dd>Styling system</dd></div>
+              </dl>
+            </article>
+            <article id="skill-design" class="skill-article reveal" data-index="1" aria-labelledby="skill-design-title">
+              <p class="skill-watermark" aria-hidden="true">02</p>
+              <div class="skill-copy">
+                <p class="skill-idx">02 / 06</p>
+                <h3 id="skill-design-title">Design to production</h3>
+                <p class="skill-lead">The file format is not the point. I build the Angular app the picture was asking for — structure, states, and behavior.</p>
+              </div>
+              <dl class="specs">
+                <div><dt>Figma</dt><dd>To a production app</dd></div>
+                <div><dt>PSD</dt><dd>To a production app</dd></div>
+                <div><dt>Screenshots</dt><dd>To a production app</dd></div>
+                <div><dt>Other designs</dt><dd>To a production app</dd></div>
+                <div><dt>Storybook</dt><dd>Component work</dd></div>
+                <div><dt>Design systems</dt><dd>Theming</dd></div>
+                <div><dt>Tailwind</dt><dd>When the system uses it</dd></div>
+              </dl>
+            </article>
+            <article id="skill-data" class="skill-article reveal" data-index="2" aria-labelledby="skill-data-title">
+              <p class="skill-watermark" aria-hidden="true">03</p>
+              <div class="skill-copy">
+                <p class="skill-idx">03 / 06</p>
+                <h3 id="skill-data-title">Data on screen</h3>
+                <p class="skill-lead">Dashboards and spatial tools for people who operate the data. Role-based views, charts, filters, and forms that stay clear when the dataset is large.</p>
+              </div>
+              <dl class="specs">
+                <div><dt>FabricJS</dt><dd>Floor plans you can draw on</dd></div>
+                <div><dt>GoodData</dt><dd>Role-based dashboards</dd></div>
+                <div><dt>D3.js</dt><dd>Charts</dd></div>
+                <div><dt>Chart.js</dt><dd>Charts</dd></div>
+                <div><dt>Highcharts</dt><dd>Charts</dd></div>
+                <div><dt>REST</dt><dd>APIs</dd></div>
+                <div><dt>GraphQL</dt><dd>APIs</dd></div>
+                <div><dt>WebSockets</dt><dd>Live data</dd></div>
+              </dl>
+            </article>
+            <article id="skill-ai" class="skill-article reveal" data-index="3" aria-labelledby="skill-ai-title">
+              <p class="skill-watermark" aria-hidden="true">04</p>
+              <div class="skill-copy">
+                <p class="skill-idx">04 / 06</p>
+                <h3 id="skill-ai-title">AI front-end</h3>
+                <p class="skill-lead">AI shows up as interface, not as a demo. Chat, completion, and recommendations — including models running locally. Some of this landed in the Appcarry years.</p>
+              </div>
+              <dl class="specs">
+                <div><dt>Chat interfaces</dt><dd>Product UI</dd></div>
+                <div><dt>OpenAI-style APIs</dt><dd>Integration</dd></div>
+                <div><dt>Ollama</dt><dd>Local models</dd></div>
+                <div><dt>Recommendations</dt><dd>Product UI</dd></div>
+                <div><dt>Text completion</dt><dd>Product UI</dd></div>
+              </dl>
+            </article>
+            <article id="skill-tests" class="skill-article reveal" data-index="4" aria-labelledby="skill-tests-title">
+              <p class="skill-watermark" aria-hidden="true">05</p>
+              <div class="skill-copy">
+                <p class="skill-idx">05 / 06</p>
+                <h3 id="skill-tests-title">Tests</h3>
+                <p class="skill-lead">A floor under the next change. At Appcarry, unit tests and performance work were the base new features landed on.</p>
+              </div>
+              <dl class="specs">
+                <div><dt>Jasmine</dt><dd>Unit</dd></div>
+                <div><dt>Karma</dt><dd>Unit</dd></div>
+                <div><dt>Jest</dt><dd>Unit</dd></div>
+                <div><dt>Cypress</dt><dd>End to end</dd></div>
+              </dl>
+            </article>
+            <article id="skill-also" class="skill-article reveal" data-index="5" aria-labelledby="skill-also-title">
+              <p class="skill-watermark" aria-hidden="true">06</p>
+              <div class="skill-copy">
+                <p class="skill-idx">06 / 06</p>
+                <h3 id="skill-also-title">Also in production</h3>
+                <p class="skill-lead">Used when the product called for them. The center of the practice is still the Angular front-end.</p>
+              </div>
+              <dl class="specs">
+                <div><dt>React</dt><dd>When the product is React</dd></div>
+                <div><dt>Laravel</dt><dd>Server</dd></div>
+                <div><dt>CodeIgniter</dt><dd>Server</dd></div>
+                <div><dt>Express.js</dt><dd>Server</dd></div>
+                <div><dt>LoopBack</dt><dd>APIs</dd></div>
+              </dl>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="journey" aria-labelledby="journey-title">
+      <div class="journey-sticky">
+        <div class="journey-head">
+          <h2 id="journey-title"><span>02</span> Journey</h2>
+          <p class="section-lede">Four chapters, from the first product to the current contract. The calendar is the overlap — Appcarry starts as Estater ends, runs beside Prospecta, then beside Upwork.</p>
+        </div>
+        <div class="register" data-register style="--span: 104" aria-describedby="calendar-help">
+          <p id="calendar-help" class="visually-hidden">Years from February 2018 to now. Hover the bars with a pointer to read which roles overlapped.</p>
+          <div class="scale" aria-hidden="true">
+            <span style="--at: 0">2018</span>
+            <span class="scale-minor" style="--at: 23">2020</span>
+            <span style="--at: 47">2022</span>
+            <span class="scale-minor" style="--at: 71">2024</span>
+            <span class="scale-year-now" style="--at: 95">2026</span>
+            <span class="scale-now" style="--at: 104">Now</span>
+          </div>
+          <div class="lanes-wrap" data-track>
+            <div class="scrub" data-scrub hidden>
+              <span class="scrub-label" data-scrub-label></span>
+            </div>
+            <div class="lanes">
+              <a class="lane" href="#chapter-estater" data-index="0" data-start="0" data-end="27" style="--s: 0; --e: 27" aria-current="true">
+                <span class="lane-name"><span>Estater</span><small>Where it started</small></span>
+                <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
+                <span class="lane-dates">2018–20</span>
+              </a>
+              <a class="lane" href="#chapter-prospecta" data-index="1" data-start="32" data-end="55" style="--s: 32; --e: 55">
+                <span class="lane-name"><span>Prospecta</span><small>Enterprise data</small></span>
+                <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
+                <span class="lane-dates">2020–22</span>
+              </a>
+              <a class="lane" href="#chapter-appcarry" data-index="2" data-start="27" data-end="80" style="--s: 27; --e: 80">
+                <span class="lane-name"><span>Appcarry</span><small>Dashboards, alongside</small></span>
+                <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
+                <span class="lane-dates">2020–24</span>
+              </a>
+              <a class="lane" href="#chapter-upwork" data-index="3" data-start="55" data-end="104" style="--s: 55; --e: 104">
+                <span class="lane-name"><span>Upwork</span><small>Freelance, individual</small></span>
+                <span class="lane-track" aria-hidden="true"><span class="lane-bar"></span></span>
+                <span class="lane-dates">2022–now</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="chapter-window" data-chapter-window>
+          <div class="chapter-track" data-chapter-track>
+            <article id="chapter-estater" class="chapter reveal is-active" data-index="0" aria-labelledby="chapter-estater-title">
+              <p class="chapter-kicker">Feb 2018 – May 2020</p>
+              <h3 id="chapter-estater-title">Estater</h3>
+              <p class="chapter-role">Senior front-end developer · Full-time · India</p>
+              <p class="chapter-lead">Property-analysis tools for Kuwait and Bahrain.</p>
+              <p>I built customer-facing tools for catchment analysis, price trends, and property benchmarking. Survey work was still living in documents and spreadsheets. I digitized those workflows, including CSV upload from legacy files, so field data landed in the product.</p>
+              <p class="chapter-meaning">Where it started. Analysis tools someone else would use to make a decision.</p>
+            </article>
+            <article id="chapter-prospecta" class="chapter reveal" data-index="1" aria-labelledby="chapter-prospecta-title">
+              <p class="chapter-kicker">Oct 2020 – Sep 2022</p>
+              <h3 id="chapter-prospecta-title">Prospecta Software</h3>
+              <p class="chapter-role">Senior front-end developer · Full-time · India</p>
+              <p class="chapter-lead">Data-governance screens on a platform fed by SAP.</p>
+              <p>I improved the UI across a suite of data integration, quality, and governance products handling large incoming datasets. The screens had to stay responsive and follow the way operators actually move through a 360° view of the data.</p>
+              <p class="chapter-meaning">Where it widened. Enterprise scale, and interfaces for people who live in the data all day. Appcarry continued part-time beside this role.</p>
+            </article>
+            <article id="chapter-appcarry" class="chapter reveal" data-index="2" aria-labelledby="chapter-appcarry-title">
+              <p class="chapter-kicker">May 2020 – Oct 2024</p>
+              <h3 id="chapter-appcarry-title">Appcarry</h3>
+              <p class="chapter-role">Front-end engineer · Part-time · India</p>
+              <p class="chapter-lead">Ad-tracking dashboards. Angular 12 to 17, and AI interface work along the way.</p>
+              <p>I built analytics dashboards and charted reports for impressions, events, conversions, and installs — filterable reports, dynamic forms, and a split into modules so the app stayed maintainable. Unit tests and performance work gave new features a stable base. From 2020 to 2022 this ran beside full-time work.</p>
+              <p class="chapter-meaning">The long thread of dashboard craft. It starts as Estater ends, runs through Prospecta, and continues into the Upwork years.</p>
+            </article>
+            <article id="chapter-upwork" class="chapter reveal" data-index="3" aria-labelledby="chapter-upwork-title">
+              <p class="chapter-kicker">Sep 2022 – present</p>
+              <h3 id="chapter-upwork-title">Upwork</h3>
+              <p class="chapter-role">Front-end engineer · Freelance · Individual</p>
+              <p class="chapter-lead">Long-term Angular SaaS, contracted directly.</p>
+              <p>I bid as an individual, not through a firm. The contracts are long-running front-end work on Angular SaaS products: interactive floor plans, role-based analytics, and interfaces taken from design through production. The client preference on record has been the United States and Canada.</p>
+              <p class="chapter-meaning">The current chapter. Freelance, on contract, after the employed years.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="craft" aria-labelledby="craft-title">
+      <p class="section-kicker"><span>03</span> Craft</p>
+      <h2 id="craft-title">What I do best, and what I love.</h2>
+      <p class="section-lede">The skills above are the range. This is the part I am willing to be hired for, and the part I want to keep doing.</p>
+      <div class="best">
+        <article class="reveal lift">
+          <p class="num">01</p>
+          <div>
+            <h3>From a picture of the product to the product.</h3>
+            <p>Figma, PSD, screenshot, or a looser design. I build the Angular application — components, states, and real data — until it behaves like the thing that was drawn.</p>
+          </div>
+        </article>
+        <article class="reveal lift">
+          <p class="num">02</p>
+          <div>
+            <h3>Screens for people who operate the data.</h3>
+            <p>Role-based dashboards, charts, filters, dynamic forms, and floor plans. Prospecta’s governance suite and Appcarry’s tracking reports. Large datasets, still legible.</p>
+          </div>
+        </article>
+        <article class="reveal lift">
+          <p class="num">03</p>
+          <div>
+            <h3>Speed you can account for.</h3>
+            <p>Lazy loading and tighter data fetching, with a test floor under the next change. Jasmine, Karma, Jest, and Cypress cover that work.</p>
+          </div>
+        </article>
+      </div>
+      <div class="loves">
+        <h3 class="loves-heading">What I love</h3>
+        <article class="reveal">
+          <h3>Drawing on a plan</h3>
+          <p>A floor plan stops being a picture once you can add a zone, edit it, and style it. That kind of direct manipulation is the work I like most.</p>
+        </article>
+        <article class="reveal">
+          <h3>AI as part of the interface</h3>
+          <p>Chat, text completion, recommendations. OpenAI-style APIs, and local models through Ollama when the product should run close to the user. The UI still has to be finished.</p>
+        </article>
+        <article class="reveal">
+          <h3>The last ten percent</h3>
+          <p>Focus order, spacing, empty and error states, motion that shows what changed.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <p class="section-kicker"><span>04</span> Contact</p>
+      <h2 id="contact-title">If the work fits, write.</h2>
+      <div class="contact-grid">
+        <div class="contact-primary" data-email-group>
+          <a class="email" href="mailto:shahenshah.malik@hotmail.com" data-email="shahenshah.malik@hotmail.com">shahenshah.malik@hotmail.com</a>
+          <div class="contact-actions">
+            <button class="copy" type="button" data-copy="shahenshah.malik@hotmail.com">Copy address</button>
+            <a class="btn" href="public/Shahnshah-Malik-Resume.docx" download>Download resume</a>
+          </div>
+          <p class="email-note" data-email-status role="status" aria-live="polite"></p>
+          <p class="phone"><a href="tel:+918882670684">+91 888 267 0684</a></p>
+        </div>
+        <ul class="contact-links">
+          <li><a href="https://github.com/shahnshahmalik" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="https://www.linkedin.com/in/shahnshahmalik/" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="https://www.upwork.com/freelancers/~012dfed8a66d5a977a" target="_blank" rel="noopener noreferrer">Upwork<span class="visually-hidden"> (opens in a new tab)</span></a></li>
+          <li><a href="public/Shahnshah-Malik-Resume.docx" download>Resume</a></li>
+        </ul>
+      </div>
+      <p class="watermark" aria-hidden="true">Shahnshah</p>
+      <footer class="colophon">
+        <p>New Delhi, India</p>
+        <p>BCA, Jamia Hamdard University, 2012</p>
+        <p>© 2026 Shahnshah</p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.min.js" defer></script>
+  <script src="index.js" defer></script>
 </body>
 </html>
