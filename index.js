@@ -559,7 +559,7 @@
     if (note) {
       note.textContent = ok
         ? "Copied " + ADDRESS
-        : "Could not copy automatically. The address is selected — press ⌘C.";
+        : "Could not copy automatically. The address is selected. Press Ctrl+C, or Command+C on a Mac.";
     }
     if (!ok) selectVisibleAddress(group);
     if (!trigger) return;
