@@ -53,9 +53,124 @@
     return { top: top, travel: travel };
   }
 
-  function scrollToY(y) {
-    if (lenis) lenis.scrollTo(y, { force: true, lock: true, duration: 1.05 });
-    else window.scrollTo({ top: y, behavior: reduceQuery.matches ? "auto" : "smooth" });
+  function scrollToY(y, options) {
+    options = options || {};
+    if (lenis) {
+      lenis.scrollTo(y, {
+        force: true,
+        lock: !options.immediate,
+        duration: options.immediate ? 0 : (options.duration || 1.05),
+        immediate: !!options.immediate,
+        onComplete: options.onComplete
+      });
+    } else {
+      window.scrollTo({ top: y, behavior: reduceQuery.matches || options.immediate ? "auto" : "smooth" });
+      if (options.onComplete) options.onComplete();
+    }
+  }
+
+  function destinationY(el) {
+    if (!el || el.id === "top") return 0;
+    return Math.max(0, el.getBoundingClientRect().top + window.scrollY);
+  }
+
+  function crossesPinnedScrub(fromY, toY) {
+    var start = Math.min(fromY, toY);
+    var end = Math.max(fromY, toY);
+    var limit = window.innerHeight * 0.45;
+    return [thesis, practice, journey].some(function (section) {
+      if (!section) return false;
+      var range = sectionRange(section);
+      var pinStart = range.top;
+      var pinEnd = range.top + range.travel;
+      var overlap = Math.min(end, pinEnd) - Math.max(start, pinStart);
+      return overlap > limit;
+    });
+  }
+
+  var navJumpToken = 0;
+
+  function writeHash(fromY, id, y) {
+    if (!id) return;
+    var next = "#" + id;
+    if (location.hash === next) {
+      history.replaceState({ nav: true, y: y }, "", next);
+      return;
+    }
+    history.replaceState({ nav: true, y: fromY }, "");
+    history.pushState({ nav: true, y: y }, "", next);
+  }
+
+  function placeFocus(id) {
+    var el = id ? document.getElementById(id) : null;
+    if (!el) return;
+    var heading = el.querySelector("h1, h2, h3") || el;
+    if (!heading.hasAttribute("tabindex")) heading.setAttribute("tabindex", "-1");
+    try { heading.focus({ preventScroll: true }); } catch (err) { heading.focus(); }
+  }
+
+  function finishJump(token) {
+    if (token !== navJumpToken) return;
+    root.classList.remove("is-nav-jump");
+    window.setTimeout(function () {
+      if (token !== navJumpToken) return;
+      if (lenis) lenis.start();
+    }, 260);
+  }
+
+  // A nav jump that travels through a pinned section fades out, jumps, and fades in,
+  // so the pin does not scrub its chapters on the way. Wheel scrolling is unchanged.
+  function beginJump(y, id, push) {
+    var token = ++navJumpToken;
+    var fromY = window.scrollY;
+    var main = document.getElementById("main");
+    if (lenis) lenis.stop();
+    function commit() {
+      if (token !== navJumpToken) return;
+      if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+      else window.scrollTo(0, y);
+      if (window.ScrollTrigger) window.ScrollTrigger.update();
+      paintProgress();
+      spy();
+      if (push) writeHash(fromY, id, y);
+      placeFocus(id);
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () { finishJump(token); });
+      });
+    }
+    if (!main) {
+      commit();
+      return;
+    }
+    root.classList.add("is-nav-jump");
+    var opacity = parseFloat(window.getComputedStyle(main).opacity);
+    if (opacity < 0.05) {
+      commit();
+      return;
+    }
+    var finished = false;
+    function done(event) {
+      if (finished) return;
+      if (event && (event.target !== main || event.propertyName !== "opacity")) return;
+      finished = true;
+      main.removeEventListener("transitionend", done);
+      commit();
+    }
+    main.addEventListener("transitionend", done);
+    window.setTimeout(function () { done(null); }, 450);
+  }
+
+  function onPopState() {
+    if (!root.classList.contains("motion")) return;
+    var y = history.state && typeof history.state.y === "number" ? history.state.y : destinationY(document.getElementById((location.hash || "").slice(1)));
+    if (Math.abs(window.scrollY - y) < 2) {
+      spy();
+      return;
+    }
+    if (crossesPinnedScrub(window.scrollY, y)) beginJump(y, null, false);
+    else if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+    else window.scrollTo(0, y);
+    spy();
   }
 
   function scrollToProgress(section, progress) {
@@ -224,6 +339,9 @@
       lenis.destroy();
       lenis = null;
     }
+    window.removeEventListener("popstate", onPopState);
+    if ("scrollRestoration" in history) history.scrollRestoration = "auto";
+    root.classList.remove("is-nav-jump");
     if (chapterTrack) chapterTrack.style.transform = "";
     if (journey) journey.style.height = "";
     root.classList.remove("armed");
@@ -236,6 +354,8 @@
     splitThesis();
     layoutJourney();
 
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.addEventListener("popstate", onPopState);
     lenis = new window.Lenis({
       autoRaf: false,
       lerp: 0.1,
@@ -287,6 +407,11 @@
     paintSkill(0);
     paintJourney(0);
     window.ScrollTrigger.refresh();
+    var hashId = (location.hash || "").slice(1);
+    if (hashId && hashId !== "top") {
+      var hashed = document.getElementById(hashId);
+      if (hashed) lenis.scrollTo(destinationY(hashed), { immediate: true, force: true });
+    }
     bindLifts();
     bindCursor();
     if (document.fonts && document.fonts.ready) {
@@ -500,16 +625,21 @@
       if (!el) return;
       if (!root.classList.contains("motion")) return;
       event.preventDefault();
+      var fromY = window.scrollY;
       if (link.closest(".practice-index") && link.hasAttribute("data-index")) {
         var skillCount = skillArticles.length || 1;
-        scrollToProgress(practice, (Number(link.getAttribute("data-index")) + 0.04) / skillCount);
+        var skillY = sectionRange(practice).top + sectionRange(practice).travel * ((Number(link.getAttribute("data-index")) + 0.04) / skillCount);
+        writeHash(fromY, id, skillY);
+        scrollToY(skillY);
         return;
       }
       if (link.classList.contains("lane")) {
         var count = chapters.length || 1;
         var laneIndex = Number(link.getAttribute("data-index")) || 0;
         var scaled = count > 1 ? laneIndex / (count - 1) : 0;
-        scrollToProgress(journey, scaled * 0.95);
+        var laneY = sectionRange(journey).top + sectionRange(journey).travel * (scaled * 0.95);
+        writeHash(fromY, id, laneY);
+        scrollToY(laneY);
         var heading = el.querySelector("h3");
         if (heading) {
           heading.setAttribute("tabindex", "-1");
@@ -517,8 +647,19 @@
         }
         return;
       }
-      if (lenis) lenis.scrollTo(el, { offset: 0, force: true, lock: true, duration: 1.05 });
-      else el.scrollIntoView();
+      var y = destinationY(el);
+      if (Math.abs(fromY - y) < 2) {
+        writeHash(fromY, id, y);
+        placeFocus(id);
+        return;
+      }
+      if (crossesPinnedScrub(fromY, y)) {
+        beginJump(y, id, true);
+        return;
+      }
+      writeHash(fromY, id, y);
+      scrollToY(y);
+      placeFocus(id);
     });
   }
 
