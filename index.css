@@ -1022,6 +1022,13 @@ a.btn.is-copied,
     background: var(--night);
   }
 
+  .motion main { transition: opacity 0.22s ease; }
+
+  .motion.is-nav-jump main {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .motion .practice-count { display: block; }
 
   .motion #practice .section-lede { display: none; }
