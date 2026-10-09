@@ -122,10 +122,24 @@
   function layoutJourney() {
     if (!journey || !chapterTrack || !chapterWindow) return;
     chapterTrack.style.transform = "none";
+    if (root.classList.contains("motion")) {
+      var slide = chapterWindow.clientWidth;
+      chapters.forEach(function (chapter) {
+        chapter.style.flexBasis = slide + "px";
+        chapter.style.maxWidth = slide + "px";
+      });
+    } else {
+      chapters.forEach(function (chapter) {
+        chapter.style.flexBasis = "";
+        chapter.style.maxWidth = "";
+      });
+    }
     var distance = Math.max(0, chapterTrack.scrollWidth - chapterWindow.clientWidth);
     journeyDistance = distance;
     chapterOffsets = chapters.map(function (chapter) { return chapter.offsetLeft; });
-    journey.style.height = (window.innerHeight + distance * 1.4) + "px";
+    if (root.classList.contains("motion")) {
+      journey.style.height = (window.innerHeight + distance * 1.2) + "px";
+    }
     syncOverflow(chapters.concat(skillArticles));
   }
 
@@ -137,33 +151,30 @@
   }
 
   function paintJourney(progress) {
-    if (!chapterTrack) return;
-    var span = 1 - 0.08;
-    var scaled = Math.min(span, progress) / span;
-    var tx = -scaled * journeyDistance;
+    if (!chapterTrack || !chapters.length) return;
+    var count = chapters.length;
+    var span = 0.95;
+    var scaled = Math.min(1, Math.max(0, progress / span));
+    var exact = scaled * Math.max(1, count - 1);
+    var index = Math.min(count - 1, Math.floor(exact + 0.0001));
+    var local = exact - index;
+    var travel = 0;
+    if (index < count - 1) {
+      var hold = 0.58;
+      travel = local <= hold ? 0 : (local - hold) / (1 - hold);
+      travel = travel * travel * (3 - 2 * travel);
+    }
+    var origin = chapterOffsets[0] || 0;
+    var from = (chapterOffsets[index] || 0) - origin;
+    var next = Math.min(count - 1, index + 1);
+    var to = (chapterOffsets[next] || 0) - origin;
+    var tx = -(from + (to - from) * travel);
     chapterTrack.style.transform = "translate3d(" + tx.toFixed(2) + "px,0,0)";
-    var windowRect = chapterWindow.getBoundingClientRect();
-    var focus = windowRect.left + Math.max(200, Math.min(280, windowRect.width * 0.22));
-    var index = 0;
-    var best = Infinity;
-    var contained = false;
+    var shown = travel > 0.55 ? next : index;
     chapters.forEach(function (chapter, i) {
-      var rect = chapter.getBoundingClientRect();
-      if (rect.left <= focus && rect.right >= focus) {
-        index = i;
-        contained = true;
-      }
-      if (contained) return;
-      var dist = Math.abs(rect.left - focus);
-      if (dist < best) {
-        best = dist;
-        index = i;
-      }
+      chapter.classList.toggle("is-active", i === shown);
     });
-    chapters.forEach(function (chapter, i) {
-      chapter.classList.toggle("is-active", i === index);
-    });
-    setCurrent(lanes, index, "aria-current");
+    setCurrent(lanes, shown, "aria-current");
   }
 
   function paintProgress() {
@@ -280,6 +291,7 @@
     bindCursor();
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () {
+        fitHero();
         layoutJourney();
         window.ScrollTrigger.refresh();
       });
@@ -355,18 +367,38 @@
     });
   }
 
-  function bindBars() {
-    var laneRoot = document.querySelector(".lanes");
-    if (!laneRoot || reduceQuery.matches || !("IntersectionObserver" in window)) return;
-    laneRoot.classList.add("will-draw");
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        laneRoot.classList.add("is-in");
-        observer.disconnect();
-      });
-    }, { threshold: 0.35 });
-    observer.observe(laneRoot);
+  function fitHero() {
+    var wide = wideQuery.matches;
+    document.querySelectorAll("[data-fit]").forEach(function (el) {
+      if (!wide) {
+        el.style.fontSize = "";
+        return;
+      }
+      var parent = el.parentElement;
+      var available = parent ? parent.clientWidth : 0;
+      if (!available) return;
+      el.style.fontSize = "100px";
+      var width = el.scrollWidth;
+      if (!width) return;
+      el.style.fontSize = ((available / width) * 100) + "px";
+    });
+  }
+
+  function bindHeroLight() {
+    var hero = document.getElementById("top");
+    var word = document.querySelector(".hero-discipline");
+    if (!hero || !word) return;
+    hero.addEventListener("pointermove", function (event) {
+      if (!root.classList.contains("motion")) return;
+      if (event.pointerType === "touch") return;
+      var rect = word.getBoundingClientRect();
+      if (!rect.width) return;
+      var x = ((event.clientX - rect.left) / rect.width) * 100;
+      word.style.setProperty("--gx", (x - 14) + "%");
+    });
+    hero.addEventListener("pointerleave", function () {
+      word.style.setProperty("--gx", "-45%");
+    });
   }
 
   function bindScrub() {
@@ -474,10 +506,10 @@
         return;
       }
       if (link.classList.contains("lane")) {
-        var offset = chapterOffsets[Number(link.getAttribute("data-index"))] || 0;
-        var origin = chapterOffsets[0] || 0;
-        var scaled = journeyDistance ? (offset - origin) / journeyDistance : 0;
-        scrollToProgress(journey, Math.min(1, Math.max(0, scaled * (1 - 0.08))));
+        var count = chapters.length || 1;
+        var laneIndex = Number(link.getAttribute("data-index")) || 0;
+        var scaled = count > 1 ? laneIndex / (count - 1) : 0;
+        scrollToProgress(journey, scaled * 0.95);
         var heading = el.querySelector("h3");
         if (heading) {
           heading.setAttribute("tabindex", "-1");
@@ -576,7 +608,9 @@
     bindClicks();
     bindEmail();
     bindScrub();
-    bindBars();
+    fitHero();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitHero);
+    bindHeroLight();
     if (wantsMotion()) setupMotion();
     else {
       root.classList.remove("motion");
@@ -596,6 +630,7 @@
           window.location.reload();
           return;
         }
+        fitHero();
         if (has) {
           layoutJourney();
           window.ScrollTrigger.refresh();

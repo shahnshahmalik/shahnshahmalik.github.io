@@ -233,9 +233,15 @@ button { font: inherit; color: inherit; }
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: calc(var(--nav) + 1.25rem) var(--inset-r) max(1.4rem, env(safe-area-inset-bottom)) var(--inset);
-  gap: 2rem;
+  gap: 0;
+  overflow-x: clip;
+}
+
+.hero-parallax {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .kicker,
@@ -258,24 +264,42 @@ button { font: inherit; color: inherit; }
   color: var(--muted);
 }
 
-h1 {
-  margin-top: 0.85rem;
+.hero h1 {
+  margin-top: 0.7rem;
+  width: max-content;
+  max-width: 100%;
   font-size: clamp(2.7rem, 12.4vw, 10.6rem);
   font-weight: 560;
-  letter-spacing: -0.06em;
-  line-height: 0.84;
+  letter-spacing: -0.065em;
+  line-height: 0.8;
+  white-space: nowrap;
 }
 
 .hero-discipline {
-  margin-top: -0.02em;
+  --gx: -45%;
+  width: max-content;
+  max-width: 100%;
+  margin-top: -0.04em;
   font-size: clamp(2.7rem, 13.2vw, 11rem);
   font-weight: 560;
   letter-spacing: -0.065em;
-  line-height: 0.84;
+  line-height: 0.8;
   text-transform: uppercase;
+  white-space: nowrap;
   color: rgba(243, 239, 230, 0.92);
-  -webkit-text-stroke: 1.5px rgba(243, 239, 230, 0.88);
+  -webkit-text-stroke: 1.5px rgba(243, 239, 230, 0.9);
   -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 1040px) {
+  .motion .hero-discipline {
+    background-image: linear-gradient(90deg, transparent 0%, var(--signal) 46%, #f3efe6 50%, var(--signal) 54%, transparent 100%);
+    background-repeat: no-repeat;
+    background-size: 28% 100%;
+    background-position: var(--gx) 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
 }
 
 .hero-bottom {
@@ -1129,40 +1153,36 @@ a.btn.is-copied,
     display: flex;
     height: 100%;
     align-items: stretch;
-    gap: 3vw;
-    padding-left: var(--inset);
-    padding-right: var(--inset-r);
+    gap: 0;
+    padding-left: 0;
+    padding-right: 0;
     will-change: transform;
   }
 
   .motion .chapter {
-    flex: 0 0 min(70vw, 42rem);
-    max-width: none;
+    flex: 0 0 100%;
+    max-width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0.2rem 4vw 0.2rem 0;
+    padding: 0.2rem var(--inset-r) 0.2rem var(--inset);
     border-top: 0;
     overflow: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    box-sizing: border-box;
   }
 
   .motion .chapter h3 {
     font-size: clamp(3rem, 5.6vw, 5.4rem);
-    max-width: 18ch;
+    max-width: 100%;
   }
 
   .motion .chapter-lead,
   .motion .chapter p,
   .motion .chapter-meaning,
   .motion .chapter-role {
-    max-width: 36rem;
-  }
-
-  .motion .chapter-window {
-    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 4.5rem), transparent);
-    mask-image: linear-gradient(90deg, #000 calc(100% - 4.5rem), transparent);
+    max-width: min(40rem, 100%);
   }
 
   .motion.armed .lift > div > h3 {
@@ -1369,20 +1389,6 @@ a.btn.is-copied,
   .scroll-cue i { animation: cue 1.8s ease-in-out infinite; transform-origin: top center; }
 
   .marquee-track { animation: ticker 42s linear infinite; }
-
-  .js .lanes.will-draw .lane-bar {
-    transform: translateY(-50%) scaleX(0);
-    transform-origin: left center;
-  }
-
-  .js .lanes.will-draw.is-in .lane-bar {
-    animation: bar-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .js .lanes.will-draw.is-in .lane:nth-child(1) .lane-bar { animation-delay: 0.02s; }
-  .js .lanes.will-draw.is-in .lane:nth-child(2) .lane-bar { animation-delay: 0.08s; }
-  .js .lanes.will-draw.is-in .lane:nth-child(3) .lane-bar { animation-delay: 0.14s; }
-  .js .lanes.will-draw.is-in .lane:nth-child(4) .lane-bar { animation-delay: 0.2s; }
 }
 
 @keyframes rise {
@@ -1398,10 +1404,6 @@ a.btn.is-copied,
 @keyframes ticker {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
-}
-
-@keyframes bar-in {
-  to { transform: translateY(-50%) scaleX(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
