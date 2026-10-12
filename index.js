@@ -18,6 +18,8 @@
 
   var lenis = null;
   var ticker = null;
+  var navHold = null;
+  var navToken = 0;
   var journeyDistance = 0;
   var chapterOffsets = [];
   var progressBar = document.querySelector("[data-progress]");
@@ -55,16 +57,18 @@
 
   function scrollToY(y, options) {
     options = options || {};
+    var immediate = !!options.immediate;
     if (lenis) {
       lenis.scrollTo(y, {
         force: true,
-        lock: !options.immediate,
-        duration: options.immediate ? 0 : (options.duration || 1.05),
-        immediate: !!options.immediate,
+        lock: !immediate,
+        duration: immediate ? 0 : (options.duration == null ? 1.05 : options.duration),
+        immediate: immediate,
+        easing: options.easing,
         onComplete: options.onComplete
       });
     } else {
-      window.scrollTo({ top: y, behavior: reduceQuery.matches || options.immediate ? "auto" : "smooth" });
+      window.scrollTo({ top: y, behavior: reduceQuery.matches || immediate ? "auto" : "smooth" });
       if (options.onComplete) options.onComplete();
     }
   }
@@ -73,22 +77,6 @@
     if (!el || el.id === "top") return 0;
     return Math.max(0, el.getBoundingClientRect().top + window.scrollY);
   }
-
-  function crossesPinnedScrub(fromY, toY) {
-    var start = Math.min(fromY, toY);
-    var end = Math.max(fromY, toY);
-    var limit = window.innerHeight * 0.45;
-    return [thesis, practice, journey].some(function (section) {
-      if (!section) return false;
-      var range = sectionRange(section);
-      var pinStart = range.top;
-      var pinEnd = range.top + range.travel;
-      var overlap = Math.min(end, pinEnd) - Math.max(start, pinStart);
-      return overlap > limit;
-    });
-  }
-
-  var navJumpToken = 0;
 
   function writeHash(fromY, id, y) {
     if (!id) return;
@@ -109,73 +97,109 @@
     try { heading.focus({ preventScroll: true }); } catch (err) { heading.focus(); }
   }
 
-  function finishJump(token) {
-    if (token !== navJumpToken) return;
-    root.classList.remove("is-nav-jump");
-    window.setTimeout(function () {
-      if (token !== navJumpToken) return;
-      if (lenis) lenis.start();
-    }, 260);
+  function navEase(t) {
+    return 1 - Math.pow(1 - t, 3);
   }
 
-  // A nav jump that travels through a pinned section fades out, jumps, and fades in,
-  // so the pin does not scrub its chapters on the way. Wheel scrolling is unchanged.
-  function beginJump(y, id, push) {
-    var token = ++navJumpToken;
+  function navDuration(distance) {
+    var screens = Math.abs(distance) / Math.max(1, window.innerHeight);
+    return Math.min(1.4, Math.max(0.85, 0.85 + Math.min(screens, 8) * 0.07));
+  }
+
+  function pinProgressAt(section, y) {
+    var range = sectionRange(section);
+    return Math.min(1, Math.max(0, (y - range.top) / range.travel));
+  }
+
+  function pinIsOnScreen(section) {
+    var range = sectionRange(section);
+    var y = window.scrollY;
+    return y + 1 >= range.top && y <= range.top + range.travel + 1;
+  }
+
+  function sectionIdFor(id) {
+    if (!id || id === "top" || id === "main") return null;
+    var el = document.getElementById(id);
+    if (!el) return null;
+    var direct = sections.some(function (section) { return section && section.id === id; });
+    if (direct) return id;
+    var owner = el.closest ? el.closest("section") : null;
+    return owner ? owner.id : null;
+  }
+
+  function setNavCurrent(sectionId) {
+    navLinks.forEach(function (link) {
+      var on = !!(sectionId && link.getAttribute("href") === "#" + sectionId);
+      if (on) link.setAttribute("aria-current", "true");
+      else link.removeAttribute("aria-current");
+    });
+  }
+
+  // While a nav glide is running, keep each pin's picture still. A pin that is
+  // off screen is set to the state the destination needs, so it does not pop
+  // when it comes into view. Wheel scrolling never sets this hold.
+  function holdPins() {
+    if (!navHold) return;
+    var finalY = navHold.finalY;
+    [
+      [thesis, paintThesis, "thesis"],
+      [practice, paintSkill, "practice"],
+      [journey, paintJourney, "journey"]
+    ].forEach(function (row) {
+      var section = row[0];
+      if (!section) return;
+      var key = row[2];
+      var onScreen = pinIsOnScreen(section);
+      if (onScreen && navHold.locked[key]) return;
+      if (onScreen && navHold.locked[key] !== false) {
+        navHold.locked[key] = true;
+        return;
+      }
+      if (!onScreen) {
+        row[1](pinProgressAt(section, finalY));
+        navHold.locked[key] = false;
+      }
+    });
+  }
+
+  function releasePins() {
+    navHold = null;
+    if (thesis) paintThesis(pinProgressAt(thesis, window.scrollY));
+    if (practice) paintSkill(pinProgressAt(practice, window.scrollY));
+    if (journey) paintJourney(pinProgressAt(journey, window.scrollY));
+    spy();
+  }
+
+  function glideTo(y, id, push, focus) {
     var fromY = window.scrollY;
-    var main = document.getElementById("main");
-    if (lenis) lenis.stop();
-    function commit() {
-      if (token !== navJumpToken) return;
-      if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
-      else window.scrollTo(0, y);
-      if (window.ScrollTrigger) window.ScrollTrigger.update();
-      paintProgress();
-      spy();
+    var token = ++navToken;
+    if (Math.abs(fromY - y) < 2) {
       if (push) writeHash(fromY, id, y);
-      placeFocus(id);
-      window.requestAnimationFrame(function () {
-        window.requestAnimationFrame(function () { finishJump(token); });
-      });
-    }
-    if (!main) {
-      commit();
+      releasePins();
+      if (focus !== false && id) placeFocus(id);
       return;
     }
-    root.classList.add("is-nav-jump");
-    var opacity = parseFloat(window.getComputedStyle(main).opacity);
-    if (opacity < 0.05) {
-      commit();
-      return;
-    }
-    var finished = false;
-    function done(event) {
-      if (finished) return;
-      if (event && (event.target !== main || event.propertyName !== "opacity")) return;
-      finished = true;
-      main.removeEventListener("transitionend", done);
-      commit();
-    }
-    main.addEventListener("transitionend", done);
-    window.setTimeout(function () { done(null); }, 450);
+    navHold = { finalY: y, locked: {} };
+    holdPins();
+    setNavCurrent(sectionIdFor(id));
+    if (push) writeHash(fromY, id, y);
+    scrollToY(y, {
+      duration: navDuration(y - fromY),
+      easing: navEase,
+      onComplete: function () {
+        if (token !== navToken) return;
+        releasePins();
+        if (focus !== false && id) placeFocus(id);
+      }
+    });
   }
 
   function onPopState() {
     if (!root.classList.contains("motion")) return;
-    var y = history.state && typeof history.state.y === "number" ? history.state.y : destinationY(document.getElementById((location.hash || "").slice(1)));
-    if (Math.abs(window.scrollY - y) < 2) {
-      spy();
-      return;
-    }
-    if (crossesPinnedScrub(window.scrollY, y)) beginJump(y, null, false);
-    else if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
-    else window.scrollTo(0, y);
-    spy();
-  }
-
-  function scrollToProgress(section, progress) {
-    var range = sectionRange(section);
-    scrollToY(range.top + range.travel * Math.min(1, Math.max(0, progress)));
+    var y = history.state && typeof history.state.y === "number"
+      ? history.state.y
+      : destinationY(document.getElementById((location.hash || "").slice(1)));
+    glideTo(y, null, false, false);
   }
 
   function setCurrent(nodes, index, attr) {
@@ -301,17 +325,13 @@
 
   function spy() {
     var mark = window.scrollY + window.innerHeight * 0.35;
-    var current = sections[0];
+    var current = null;
     sections.forEach(function (section) {
       if (!section) return;
       var top = section.getBoundingClientRect().top + window.scrollY;
       if (top <= mark) current = section;
     });
-    navLinks.forEach(function (link) {
-      var on = current && link.getAttribute("href") === "#" + current.id;
-      if (on) link.setAttribute("aria-current", "true");
-      else link.removeAttribute("aria-current");
-    });
+    if (!navHold) setNavCurrent(current && current.id);
     if (nav) nav.classList.toggle("is-paper", !!(current && current.id === "journey"));
     if (!root.classList.contains("motion")) {
       var skillMark = window.scrollY + window.innerHeight * 0.45;
@@ -341,7 +361,7 @@
     }
     window.removeEventListener("popstate", onPopState);
     if ("scrollRestoration" in history) history.scrollRestoration = "auto";
-    root.classList.remove("is-nav-jump");
+    navHold = null;
     if (chapterTrack) chapterTrack.style.transform = "";
     if (journey) journey.style.height = "";
     root.classList.remove("armed");
@@ -365,6 +385,7 @@
     });
     lenis.on("scroll", function () {
       window.ScrollTrigger.update();
+      if (navHold) holdPins();
       paintProgress();
       spy();
     });
@@ -376,19 +397,19 @@
       trigger: thesis,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: function (self) { paintThesis(self.progress); }
+      onUpdate: function (self) { if (!navHold) paintThesis(self.progress); }
     });
     window.ScrollTrigger.create({
       trigger: practice,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: function (self) { paintSkill(self.progress); }
+      onUpdate: function (self) { if (!navHold) paintSkill(self.progress); }
     });
     window.ScrollTrigger.create({
       trigger: journey,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: function (self) { paintJourney(self.progress); }
+      onUpdate: function (self) { if (!navHold) paintJourney(self.progress); }
     });
 
     window.gsap.to(".hero-parallax", {
@@ -625,41 +646,21 @@
       if (!el) return;
       if (!root.classList.contains("motion")) return;
       event.preventDefault();
-      var fromY = window.scrollY;
+      var y;
+      var focus = true;
       if (link.closest(".practice-index") && link.hasAttribute("data-index")) {
         var skillCount = skillArticles.length || 1;
-        var skillY = sectionRange(practice).top + sectionRange(practice).travel * ((Number(link.getAttribute("data-index")) + 0.04) / skillCount);
-        writeHash(fromY, id, skillY);
-        scrollToY(skillY);
-        return;
-      }
-      if (link.classList.contains("lane")) {
+        y = sectionRange(practice).top + sectionRange(practice).travel * ((Number(link.getAttribute("data-index")) + 0.04) / skillCount);
+        focus = false;
+      } else if (link.classList.contains("lane")) {
         var count = chapters.length || 1;
         var laneIndex = Number(link.getAttribute("data-index")) || 0;
         var scaled = count > 1 ? laneIndex / (count - 1) : 0;
-        var laneY = sectionRange(journey).top + sectionRange(journey).travel * (scaled * 0.95);
-        writeHash(fromY, id, laneY);
-        scrollToY(laneY);
-        var heading = el.querySelector("h3");
-        if (heading) {
-          heading.setAttribute("tabindex", "-1");
-          heading.focus({ preventScroll: true });
-        }
-        return;
+        y = sectionRange(journey).top + sectionRange(journey).travel * (scaled * 0.95);
+      } else {
+        y = destinationY(el);
       }
-      var y = destinationY(el);
-      if (Math.abs(fromY - y) < 2) {
-        writeHash(fromY, id, y);
-        placeFocus(id);
-        return;
-      }
-      if (crossesPinnedScrub(fromY, y)) {
-        beginJump(y, id, true);
-        return;
-      }
-      writeHash(fromY, id, y);
-      scrollToY(y);
-      placeFocus(id);
+      glideTo(y, id, true, focus);
     });
   }
 
